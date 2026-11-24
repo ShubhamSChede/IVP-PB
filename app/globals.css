@@ -1,26 +1,108 @@
 @import "tailwindcss";
 
+/* Black + light-green theme. Poppins Bold is the default weight everywhere;
+   lighter weights only for secondary/meta text. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #000000;
+  --surface: #0a0f0b;
+  --surface-2: #111a13;
+  --border: #1d2b20;
+  --text: #a6f5bd;       /* light green — primary text */
+  --text-strong: #d4ffdf;
+  --muted: #5e8f6b;
+  --accent: #4ade80;     /* live / win / focus */
+  --danger: #f87171;
+  --warn: #facc15;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--border);
+  --color-ink: var(--text);
+  --color-ink-strong: var(--text-strong);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-danger: var(--danger);
+  --color-warn: var(--warn);
+  --font-sans: var(--font-poppins);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-weight: 700;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: #000;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Brief highlight when a realtime update changes a value. */
+@keyframes flash {
+  from { background-color: color-mix(in srgb, var(--accent) 28%, transparent); }
+  to   { background-color: transparent; }
+}
+.flash {
+  animation: flash 1.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flash { animation: none; }
+  * { scroll-behavior: auto !important; transition: none !important; }
+}
+
+/* ───────────── App feel (phones) ───────────── */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-x: none;
+}
+/* No double-tap zoom delay on controls; pinch-zoom on content still works. */
+a, button, input, select, textarea, label, [role="tab"] {
+  touch-action: manipulation;
+}
+button, [role="tab"], nav a {
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Press feedback like native buttons. */
+button:not(:disabled):active, .press:active {
+  transform: scale(0.97);
+}
+button, .press {
+  transition: transform 90ms ease, background-color 150ms ease, color 150ms ease, border-color 150ms ease, opacity 150ms ease;
+}
+
+/* Page enter transition (app/template.js re-mounts per navigation).
+   Opacity only: an animated transform would make the page the containing
+   block for position:fixed children (chat composer, bottom sheets). */
+@keyframes page-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.page-enter {
+  animation: page-enter 220ms ease-out both;
+}
+
+/* Hide scrollbars on horizontal chip rows, keep them scrollable. */
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter { animation: none; }
+  button:active, .press:active { transform: none; }
 }
