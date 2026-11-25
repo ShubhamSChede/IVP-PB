@@ -1,6 +1,7 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
+import Splash from "@/components/layout/Splash";
 import { EditorProvider } from "@/components/providers/EditorProvider";
 import { LiveDataProvider } from "@/components/providers/LiveDataProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
       <body className="flex min-h-dvh flex-col bg-bg text-ink">
         <ToastProvider>
           <LiveDataProvider>
+            <Splash />
             <EditorProvider>
               <Nav />
               <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:px-6 lg:pt-6 lg:pb-12">

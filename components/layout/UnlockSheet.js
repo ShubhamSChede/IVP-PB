@@ -38,7 +38,7 @@ export default function UnlockSheet({ open, onClose }) {
     "h-12 w-full rounded-xl border border-line bg-bg px-4 text-base text-ink-strong placeholder:text-muted/70 focus:border-accent focus:outline-none";
 
   return (
-    <Sheet open={open} onClose={onClose} title="Unlock edit mode">
+    <Sheet open={open} onClose={onClose} title="Unlock edit mode" center>
       <form onSubmit={submit} className="space-y-4">
         <label className="block">
           <span className="mb-1.5 block text-sm font-medium text-muted">Your name (shown to other editors)</span>

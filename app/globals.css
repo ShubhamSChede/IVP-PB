@@ -106,3 +106,26 @@ button, .press {
   .page-enter { animation: none; }
   button:active, .press:active { transform: none; }
 }
+
+/* Sheet / dialog entrance */
+@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sheet-rise { from { opacity: 0; transform: translateY(16px) scale(0.98); } to { opacity: 1; transform: none; } }
+.sheet-backdrop { animation: sheet-fade 160ms ease-out both; }
+.sheet-panel { animation: sheet-rise 200ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Splash screen (first app open) */
+@keyframes splash-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+  50% { transform: scale(1.06); box-shadow: 0 0 0 18px transparent; }
+}
+@keyframes splash-bar {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(250%); }
+}
+.splash-ball { animation: splash-pulse 1.4s ease-in-out infinite; }
+.splash-bar { animation: splash-bar 1.1s ease-in-out infinite; }
+.splash-out { opacity: 0; visibility: hidden; transition: opacity 350ms ease, visibility 0s linear 350ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet-backdrop, .sheet-panel, .splash-ball, .splash-bar { animation: none; }
+}
