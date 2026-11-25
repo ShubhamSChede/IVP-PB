@@ -70,7 +70,7 @@ function Feed() {
             maxLength={300}
             className="h-11 min-w-0 flex-1 rounded-xl border border-line bg-bg px-3 text-base text-ink-strong placeholder:text-muted/70 focus:border-accent focus:outline-none"
           />
-          <button className="h-11 shrink-0 rounded-xl bg-accent px-4 text-sm text-black">Post</button>
+          <button className="h-11 shrink-0 rounded-xl bg-accent px-4 text-sm text-on-accent">Post</button>
         </form>
       )}
       {feed.length === 0 ? (
@@ -120,7 +120,7 @@ export default function LiveView() {
     <div className="grid gap-5 lg:grid-cols-3">
       <div className="space-y-5 lg:col-span-2">
         <div>
-          <p className="text-sm font-medium uppercase tracking-[0.18em] text-accent">{stageLabel}</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-ink">{stageLabel}</p>
           <h1 className="mt-1 text-[clamp(1.6rem,5vw,2.4rem)] leading-tight text-ink-strong">
             {settingsMap.event_title || "IVP Pickleball 2026"}
           </h1>
@@ -149,10 +149,10 @@ export default function LiveView() {
       </div>
 
       <div className="space-y-5">
-        <section className="rounded-2xl border border-line bg-surface p-4">
-          <div className="mb-1 flex items-center justify-between">
+        <section>
+          <div className="mb-2 flex items-center justify-between">
             <h2 className="text-lg text-ink-strong">Top 4</h2>
-            <Link href="/standings" className="py-2 text-sm text-muted hover:text-accent">Full table →</Link>
+            <Link href="/standings" className="py-2 text-sm text-muted hover:text-accent-ink">Full table →</Link>
           </div>
           <MiniStandings />
         </section>

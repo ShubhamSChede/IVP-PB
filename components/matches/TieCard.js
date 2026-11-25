@@ -17,17 +17,17 @@ import { useToast } from "@/components/providers/ToastProvider";
 export function StatusPill({ status, live }) {
   if (live && status !== "completed")
     return (
-      <span className="flex items-center gap-1.5 rounded-full bg-accent px-2.5 py-1 text-xs text-black">
-        <span className="size-1.5 animate-pulse rounded-full bg-black" /> LIVE
+      <span className="flex items-center gap-1.5 rounded-md bg-accent px-2.5 py-1 text-xs text-on-accent">
+        <span className="size-1.5 animate-pulse rounded-full bg-on-accent" /> LIVE
       </span>
     );
   const map = {
     pending: ["Upcoming", "border-line text-muted"],
     in_progress: ["In play", "border-warn/50 text-warn"],
-    completed: ["Final", "border-accent/40 text-accent"],
+    completed: ["Final", "border-accent/40 text-accent-ink"],
   };
   const [text, cls] = map[status];
-  return <span className={`rounded-full border px-2.5 py-1 text-xs ${cls}`}>{text}</span>;
+  return <span className={`rounded-md border px-2.5 py-1 text-xs ${cls}`}>{text}</span>;
 }
 
 function placeholder(match, side) {
@@ -141,7 +141,7 @@ export default function TieCard({ match, compact = false }) {
     idleTimer.current = setTimeout(() => setEditing(null), 20000);
   }
 
-  const nameCls = (side) => (r.winnerSide === side ? "text-accent" : r.winnerSide ? "text-muted" : "text-ink-strong");
+  const nameCls = (side) => (r.winnerSide === side ? "text-accent-ink" : r.winnerSide ? "text-muted" : "text-ink-strong");
   const showCourts = !compact || r.status !== "pending";
 
   return (
@@ -200,11 +200,11 @@ export default function TieCard({ match, compact = false }) {
               <div key={c.key} className="py-2">
                 <div className="grid grid-cols-[4.5rem_1fr_auto_1fr] items-center text-sm">
                   <span className="font-medium text-muted">Court {c.number}</span>
-                  <span className={`text-right text-lg tabular-nums ${c.winner === "a" ? "text-accent" : "text-ink-strong"}`}>
+                  <span className={`text-right text-lg tabular-nums ${c.winner === "a" ? "text-accent-ink" : "text-ink-strong"}`}>
                     <Flash value={c.a}>{c.a ?? "–"}</Flash>
                   </span>
                   <span className="px-3 text-muted">:</span>
-                  <span className={`text-lg tabular-nums ${c.winner === "b" ? "text-accent" : "text-ink-strong"}`}>
+                  <span className={`text-lg tabular-nums ${c.winner === "b" ? "text-accent-ink" : "text-ink-strong"}`}>
                     <Flash value={c.b}>{c.b ?? "–"}</Flash>
                   </span>
                 </div>
@@ -235,7 +235,7 @@ export default function TieCard({ match, compact = false }) {
           </button>
           <button
             onClick={() => save({ is_live: !match.is_live }).catch(() => {})}
-            className={`h-11 rounded-xl border ${match.is_live ? "border-accent bg-accent/15 text-accent" : "border-line text-muted hover:text-ink"}`}
+            className={`h-11 rounded-xl border ${match.is_live ? "border-accent bg-accent/15 text-accent-ink" : "border-line text-muted hover:text-ink"}`}
           >
             {match.is_live ? "On court ✓" : "On court"}
           </button>

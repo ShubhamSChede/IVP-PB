@@ -117,7 +117,7 @@ export default function ScheduleView() {
     <div>
       <PageTitle title="Schedule" subtitle="Courts 1–3 play each tie at the same time · Court 4 is for warm-up">
         {nowIdx >= 0 && (
-          <button onClick={jumpToNow} className="h-11 rounded-full border border-accent/50 px-4 text-sm text-accent">
+          <button onClick={jumpToNow} className="h-11 rounded-md border border-accent/50 px-4 text-sm text-accent-ink">
             Jump to now
           </button>
         )}
@@ -132,10 +132,10 @@ export default function ScheduleView() {
             const done = r?.status === "completed";
             const isBreak = !m;
             return (
-              <li key={it.id} id={isNow ? "wave-now" : undefined} className="grid scroll-mt-32 grid-cols-[4.25rem_1fr] gap-3">
+              <li key={it.id} id={isNow ? "wave-now" : undefined} className="grid scroll-mt-40 grid-cols-[4.25rem_1fr] gap-3">
                 {/* Time rail */}
                 <div className="relative pt-4 text-right">
-                  <p className={`text-sm tabular-nums ${isNow ? "text-accent" : done ? "text-muted" : "text-ink-strong"}`}>{it.start_time?.replace(" ", " ")}</p>
+                  <p className={`text-sm tabular-nums ${isNow ? "text-accent-ink" : done ? "text-muted" : "text-ink-strong"}`}>{it.start_time?.replace(" ", " ")}</p>
                   <p className="text-[11px] font-medium text-muted">{it.mins ? `${it.mins}m` : ""}</p>
                 </div>
                 <div className="relative border-l border-line pb-3 pl-4">

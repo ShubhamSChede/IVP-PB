@@ -1,4 +1,4 @@
-import { Poppins } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import Splash from "@/components/layout/Splash";
@@ -6,10 +6,10 @@ import { EditorProvider } from "@/components/providers/EditorProvider";
 import { LiveDataProvider } from "@/components/providers/LiveDataProvider";
 import { ToastProvider } from "@/components/providers/ToastProvider";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+// Inter — the typeface ivp.in uses for body and headings.
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -26,13 +26,13 @@ export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover", // lets safe-area insets work on notched phones
-  themeColor: "#000000",
+  themeColor: "#2f313a", // matches the charcoal header
   interactiveWidget: "resizes-content", // Android: keyboard shrinks the page, so the chat box stays visible
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${poppins.variable} h-full`}>
+    <html lang="en" className={`${inter.variable} h-full`}>
       <body className="flex min-h-dvh flex-col bg-bg text-ink">
         <ToastProvider>
           <LiveDataProvider>

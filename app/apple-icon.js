@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
-import AppIconArt from "@/components/ui/AppIconArt";
+import { AppIcon } from "@/lib/appIcon";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
 export default function AppleIcon() {
-  return new ImageResponse(<AppIconArt size={180} pad={0.14} />, size);
+  return new ImageResponse(<AppIcon size={180} pad={0.18} />, size);
 }

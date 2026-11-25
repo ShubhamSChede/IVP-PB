@@ -22,14 +22,14 @@ export function ToastProvider({ children }) {
       {/* Above the mobile tab bar; top-right on desktop. */}
       <div
         aria-live="polite"
-        className="pointer-events-none fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom))] z-50 flex flex-col items-center gap-2 px-4 lg:bottom-auto lg:top-20 lg:items-end"
+        className="pointer-events-none fixed inset-x-0 bottom-[calc(76px+env(safe-area-inset-bottom))] z-50 flex flex-col items-center gap-2 px-4 lg:bottom-auto lg:top-28 lg:items-end"
       >
         {toasts.map((t) => (
           <div
             key={t.id}
-            className={`pointer-events-auto max-w-sm rounded-xl border px-4 py-3 text-sm shadow-lg shadow-black/60 ${
+            className={`pointer-events-auto max-w-sm rounded-xl border px-4 py-3 text-sm shadow-lg shadow-black/10 ${
               t.kind === "error"
-                ? "border-danger/50 bg-[#1a0a0a] text-danger"
+                ? "border-danger/50 bg-[#fdf2f2] text-danger"
                 : "border-accent/40 bg-surface-2 text-ink-strong"
             }`}
           >

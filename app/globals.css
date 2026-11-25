@@ -1,18 +1,37 @@
 @import "tailwindcss";
 
-/* Black + light-green theme. Poppins Bold is the default weight everywhere;
-   lighter weights only for secondary/meta text. */
+/* IVP brand theme (from ivp.in): white 60 · charcoal 30 · gold 10.
+   Inter throughout; 4px corners (near-sharp) like ivp.in buttons.
+   Every colour is a variable, so `.theme-dark` re-themes a whole block
+   (header, tab bar, hero cards) to charcoal with no extra classes. */
 :root {
-  --bg: #000000;
-  --surface: #0a0f0b;
-  --surface-2: #111a13;
-  --border: #1d2b20;
-  --text: #a6f5bd;       /* light green — primary text */
-  --text-strong: #d4ffdf;
-  --muted: #5e8f6b;
-  --accent: #4ade80;     /* live / win / focus */
-  --danger: #f87171;
-  --warn: #facc15;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f7f9fb;
+  --border: #e4e5e9;
+  --text: #494b56;
+  --text-strong: #2f313a;   /* IVP charcoal */
+  --muted: #8a8c96;
+  --accent: #f2ce72;        /* IVP gold — fills, borders, highlights */
+  --accent-hover: #d3b364;
+  --accent-ink: #8c6d12;    /* gold dark enough to read as text on white */
+  --on-accent: #2f313a;     /* text on gold */
+  --danger: #c93c3c;
+  --warn: #b7791f;
+}
+
+.theme-dark {
+  --bg: #2f313a;
+  --surface: #383a45;
+  --surface-2: #424451;
+  --border: #4a4c58;
+  --text: #d6d7dd;
+  --text-strong: #ffffff;
+  --muted: #a1a3ad;
+  --accent-ink: #f2ce72;
+  --danger: #ff8f8f;
+  --warn: #f2ce72;
+  color: var(--text);
 }
 
 @theme inline {
@@ -24,30 +43,49 @@
   --color-ink-strong: var(--text-strong);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-on-accent: var(--on-accent);
   --color-danger: var(--danger);
   --color-warn: var(--warn);
-  --font-sans: var(--font-poppins);
+  --font-sans: var(--font-inter);
+
+  /* Near-sharp corners everywhere (ivp.in uses 3–4px). */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
+  --radius-4xl: 4px;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--font-poppins), system-ui, sans-serif;
-  font-weight: 700;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
+/* Type hierarchy: bold headings, semibold emphasis (names, scores), like ivp.in. */
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.01em; }
+.text-ink-strong { font-weight: 600; }
+button, [role="tab"], nav a, label > span:first-child { font-weight: 600; }
+
 ::selection {
   background: var(--accent);
-  color: #000;
+  color: var(--on-accent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--accent-ink);
   outline-offset: 2px;
 }
 
@@ -115,8 +153,8 @@ button, .press {
 
 /* Splash screen (first app open) */
 @keyframes splash-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
-  50% { transform: scale(1.06); box-shadow: 0 0 0 18px transparent; }
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.85; }
 }
 @keyframes splash-bar {
   from { transform: translateX(-100%); }
@@ -128,4 +166,14 @@ button, .press {
 
 @media (prefers-reduced-motion: reduce) {
   .sheet-backdrop, .sheet-panel, .splash-ball, .splash-bar { animation: none; }
+}
+
+/* Live score ticker (stock-tape style) */
+@keyframes ticker-slide { to { transform: translateX(-50%); } }
+.ticker-track { animation: ticker-slide linear infinite; }
+.ticker:hover .ticker-track,
+.ticker:active .ticker-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .ticker { overflow-x: auto; }
+  .ticker-track { animation: none; }
 }

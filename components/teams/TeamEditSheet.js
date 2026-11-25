@@ -91,7 +91,7 @@ export default function TeamEditSheet({ team, open, onClose }) {
                   <button
                     type="button"
                     onClick={() => update(i, { gender: p.gender === "F" ? "M" : p.gender === "M" ? null : "F" })}
-                    className={`h-12 w-12 shrink-0 rounded-xl border text-sm ${p.gender === "F" ? "border-accent bg-accent/15 text-accent" : p.gender === "M" ? "border-line text-ink" : "border-line text-muted/60"}`}
+                    className={`h-12 w-12 shrink-0 rounded-xl border text-sm ${p.gender === "F" ? "border-accent bg-accent/15 text-accent-ink" : p.gender === "M" ? "border-line text-ink" : "border-line text-muted/60"}`}
                     aria-label={`Gender: ${p.gender ?? "not set"}. Tap to change.`}
                   >
                     {p.gender ?? "–"}

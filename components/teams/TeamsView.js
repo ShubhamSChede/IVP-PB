@@ -24,7 +24,7 @@ export default function TeamsView() {
               <li key={t.id}>
                 <Link href={`/teams/${t.code}`} className="press block rounded-2xl border border-line bg-surface p-4 active:bg-surface-2">
                   <div className="flex items-start gap-3">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/15 text-sm text-accent">{t.code}</span>
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/15 text-sm text-accent-ink">{t.code}</span>
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-lg text-ink-strong">{t.name}</p>
                       <p className="truncate text-sm font-medium text-muted">{t.captain ? `Capt. ${t.captain}` : "No captain set"}</p>

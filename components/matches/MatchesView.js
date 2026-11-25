@@ -22,13 +22,13 @@ export function Podium({ matches }) {
   const places = podium(matches);
   if (!places.some((p) => p.teamId)) return null;
   return (
-    <section className="mb-4 rounded-2xl border border-accent/40 bg-gradient-to-b from-accent/10 to-surface p-4">
-      <h2 className="mb-3 text-sm text-accent">Final podium</h2>
+    <section className="theme-dark mb-4 rounded-md border-t-2 border-accent bg-bg p-4">
+      <h2 className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-accent-ink">Final podium</h2>
       <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {places.map((p, i) => (
-          <li key={p.place} className="rounded-xl border border-line bg-bg/60 p-3">
+          <li key={p.place} className="rounded-md border border-line bg-surface p-3">
             <p className="text-xs font-medium text-muted">{p.place}</p>
-            <p className={`truncate ${i === 0 ? "text-xl text-accent" : "text-base text-ink-strong"}`}>
+            <p className={`truncate ${i === 0 ? "text-xl text-accent-ink" : "text-base text-ink-strong"}`}>
               {teamsById.get(p.teamId)?.name ?? "TBD"}
             </p>
           </li>
@@ -65,7 +65,7 @@ function RerunButton({ scope }) {
       onClick={() =>
         window.confirm("Clear this stage's teams and re-pair from current results?") && run()
       }
-      className="flex h-11 items-center gap-2 rounded-full border border-line px-4 text-sm text-muted hover:text-ink disabled:opacity-50"
+      className="flex h-11 items-center gap-2 rounded-md border border-line px-4 text-sm text-muted hover:text-ink disabled:opacity-50"
     >
       <Icon name="refresh" size={16} /> {busy ? "Re-pairing…" : "Re-run pairing"}
     </button>
@@ -86,7 +86,7 @@ export default function MatchesView() {
       <PageTitle title="Matches" subtitle="Each tie is 3 sets on Courts 1–3 at once. Best of 3 wins." />
 
       {/* Stage tabs — full-width segmented control on phones */}
-      <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-30 -mx-4 mb-4 bg-bg/85 px-4 py-2 backdrop-blur-xl md:-mx-6 md:px-6 lg:top-16">
+      <div className="sticky top-[calc(5.5rem+2px+env(safe-area-inset-top))] z-30 -mx-4 mb-4 bg-bg/85 px-4 py-2 backdrop-blur-xl md:-mx-6 md:px-6 lg:top-[calc(6rem+2px)]">
       <div role="tablist" className="grid grid-cols-4 gap-1 rounded-2xl border border-line bg-surface p-1 sm:inline-grid">
         {TABS.map((t) => (
           <button
@@ -95,7 +95,7 @@ export default function MatchesView() {
             aria-selected={stage === t.key}
             onClick={() => setPicked(t.key)}
             className={`h-11 rounded-xl px-3 text-sm transition-colors sm:px-5 ${
-              stage === t.key ? "bg-accent text-black" : "text-muted hover:text-ink"
+              stage === t.key ? "bg-accent text-on-accent" : "text-muted hover:text-ink"
             }`}
           >
             <span className="sm:hidden">{t.short}</span>

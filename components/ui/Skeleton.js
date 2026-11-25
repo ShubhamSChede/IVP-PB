@@ -22,7 +22,7 @@ export function PageTitle({ title, subtitle, children }) {
 
 export function ErrorNote({ message }) {
   return (
-    <div className="rounded-2xl border border-danger/40 bg-[#140707] p-4 text-sm text-danger">
+    <div className="rounded-2xl border border-danger/40 bg-[#fdf2f2] p-4 text-sm text-danger">
       Couldn&apos;t load live data: {message}
     </div>
   );

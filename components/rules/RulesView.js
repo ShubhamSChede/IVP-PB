@@ -127,7 +127,7 @@ export default function RulesView() {
             role="tab"
             aria-selected={tab === k}
             onClick={() => setTab(k)}
-            className={`h-11 rounded-xl text-sm ${tab === k ? "bg-accent text-black" : "text-muted hover:text-ink"}`}
+            className={`h-11 rounded-xl text-sm ${tab === k ? "bg-accent text-on-accent" : "text-muted hover:text-ink"}`}
           >
             {label}
           </button>
@@ -139,7 +139,7 @@ export default function RulesView() {
         <Skeleton rows={5} className="h-28" />
       ) : tab === "rules" ? (
         <>
-          <div className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-30 -mx-4 mb-3 space-y-2 bg-bg/85 px-4 py-2 backdrop-blur-xl md:-mx-6 md:px-6 lg:top-16">
+          <div className="sticky top-[calc(5.5rem+2px+env(safe-area-inset-top))] z-30 -mx-4 mb-3 space-y-2 bg-bg/85 px-4 py-2 backdrop-blur-xl md:-mx-6 md:px-6 lg:top-[calc(6rem+2px)]">
             <input
               type="search"
               value={query}
@@ -152,7 +152,7 @@ export default function RulesView() {
                 <button
                   key={c}
                   onClick={() => setCat(c)}
-                  className={`h-9 shrink-0 rounded-full border px-3.5 text-xs ${cat === c ? "border-accent bg-accent text-black" : "border-line text-muted"}`}
+                  className={`h-9 shrink-0 rounded-md border px-3.5 text-xs ${cat === c ? "border-accent bg-accent text-on-accent" : "border-line text-muted"}`}
                 >
                   {c}
                 </button>
@@ -167,7 +167,7 @@ export default function RulesView() {
               {shown.map((r) => (
                 <li key={r.id} className={`rounded-2xl border p-4 ${r.code === "SPIRIT" ? "border-accent/40 bg-accent/[0.06]" : "border-line bg-surface"}`}>
                   <div className="flex items-start gap-3">
-                    <span className="shrink-0 rounded-lg bg-accent/15 px-2 py-1 text-xs text-accent">{r.code === "SPIRIT" ? "★" : r.code}</span>
+                    <span className="shrink-0 rounded-lg bg-accent/15 px-2 py-1 text-xs text-accent-ink">{r.code === "SPIRIT" ? "★" : r.code}</span>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-base leading-snug text-ink-strong">{r.topic}</h3>
                       <p className="text-[11px] font-medium uppercase tracking-wide text-muted">{r.category}</p>

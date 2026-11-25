@@ -46,21 +46,13 @@ export default function Splash() {
       aria-label="Loading"
       className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-bg px-8 ${hiding ? "splash-out" : ""}`}
     >
-      <div className="splash-ball relative grid size-24 place-items-center rounded-full bg-accent">
-        {[
-          [50, 20], [24, 38], [76, 38], [50, 52], [30, 72], [70, 72], [50, 86],
-        ].map(([x, y], i) => (
-          <span
-            key={i}
-            className="absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#063d1c]"
-            style={{ left: `${x}%`, top: `${y}%` }}
-          />
-        ))}
-      </div>
-      <h1 className="mt-7 text-center text-2xl text-ink-strong">{title}</h1>
-      <p className="mt-1 text-sm font-medium text-muted">Live scores · Fixtures · Standings</p>
-      <div className="mt-8 h-1 w-40 overflow-hidden rounded-full bg-line">
-        <div className="splash-bar h-full w-2/5 rounded-full bg-accent" />
+      {/* eslint-disable-next-line @next/next/no-img-element -- must render before JS; plain img is fine here */}
+      <img src="/logo-mark.png" alt="IVP" width={281} height={216} className="splash-ball h-auto w-28" />
+      <p className="mt-8 text-xs font-semibold uppercase tracking-[0.25em] text-accent-ink">Pickleball Tournament</p>
+      <h1 className="mt-2 text-center text-2xl text-ink-strong">{title}</h1>
+      <p className="mt-1 text-sm text-muted">Live scores · Fixtures · Standings</p>
+      <div className="mt-8 h-1 w-40 overflow-hidden bg-line">
+        <div className="splash-bar h-full w-2/5 bg-accent" />
       </div>
     </div>
   );

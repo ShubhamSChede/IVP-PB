@@ -34,7 +34,7 @@ export function Select({ className = "", children, ...props }) {
 export function PrimaryButton({ busy, children, className = "", ...props }) {
   return (
     <button
-      className={`h-12 w-full rounded-xl bg-accent text-base font-bold text-black disabled:opacity-40 ${className}`}
+      className={`h-12 w-full rounded-md bg-accent text-[13px] font-semibold uppercase tracking-[0.08em] text-on-accent hover:bg-accent-hover disabled:opacity-40 ${className}`}
       disabled={busy || props.disabled}
       {...props}
     >
@@ -46,7 +46,7 @@ export function PrimaryButton({ busy, children, className = "", ...props }) {
 export function GhostButton({ children, className = "", danger = false, ...props }) {
   return (
     <button
-      className={`h-12 rounded-xl border px-4 text-sm ${danger ? "border-danger/40 text-danger" : "border-line text-muted hover:text-ink"} ${className}`}
+      className={`h-12 rounded-md border px-4 text-[13px] font-semibold uppercase tracking-[0.08em] ${danger ? "border-danger/40 text-danger" : "border-ink-strong/25 text-ink-strong hover:border-ink-strong"} ${className}`}
       {...props}
     >
       {children}
@@ -59,7 +59,7 @@ export function EditIconButton({ label = "Edit", ...props }) {
   return (
     <button
       aria-label={label}
-      className="grid size-11 shrink-0 place-items-center rounded-full border border-line text-muted hover:text-ink"
+      className="grid size-11 shrink-0 place-items-center rounded-md border border-line text-muted hover:text-ink"
       {...props}
     >
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

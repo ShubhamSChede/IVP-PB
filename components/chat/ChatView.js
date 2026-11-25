@@ -27,7 +27,7 @@ function NamePrompt({ onSave }) {
       className="flex gap-2"
     >
       <TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name to join the chat" maxLength={40} autoComplete="nickname" />
-      <button className="h-12 shrink-0 rounded-xl bg-accent px-5 text-base text-black disabled:opacity-40" disabled={!name.trim()}>
+      <button className="h-12 shrink-0 rounded-xl bg-accent px-5 text-base text-on-accent disabled:opacity-40" disabled={!name.trim()}>
         Join
       </button>
     </form>
@@ -122,7 +122,7 @@ export default function ChatView() {
                 {!grouped && (
                   <p className={`mb-1 flex items-center gap-1.5 px-1 text-xs ${mine ? "text-muted" : "text-ink"}`}>
                     {mine ? "You" : m.author}
-                    {m.is_editor && <span className="rounded-full bg-accent px-1.5 text-[10px] text-black">Organiser</span>}
+                    {m.is_editor && <span className="rounded-md bg-accent px-1.5 text-[10px] text-on-accent">Organiser</span>}
                     <span className="font-medium text-muted">{time(m.created_at)}</span>
                   </p>
                 )}
@@ -138,7 +138,7 @@ export default function ChatView() {
                   )}
                   <p
                     className={`whitespace-pre-wrap wrap-break-word rounded-2xl px-3.5 py-2.5 text-[15px] leading-snug ${
-                      mine ? "rounded-br-md bg-accent text-black" : m.is_editor ? "rounded-bl-md border border-accent/40 bg-accent/10 text-ink-strong" : "rounded-bl-md bg-surface-2 text-ink-strong"
+                      mine ? "rounded-br-md bg-accent text-on-accent" : m.is_editor ? "rounded-bl-md border border-accent/40 bg-accent/10 text-ink-strong" : "rounded-bl-md bg-surface-2 text-ink-strong"
                     }`}
                   >
                     {m.body}
@@ -172,7 +172,7 @@ export default function ChatView() {
               />
               <button
                 disabled={!text.trim() || sending}
-                className="grid size-12 shrink-0 place-items-center rounded-full bg-accent text-black disabled:opacity-40"
+                className="grid size-12 shrink-0 place-items-center rounded-md bg-accent text-on-accent disabled:opacity-40"
                 aria-label="Send"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

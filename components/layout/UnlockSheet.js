@@ -59,7 +59,7 @@ export default function UnlockSheet({ open, onClose }) {
         {error && <p className="text-sm text-danger">{error}</p>}
         <button
           disabled={busy || !code.trim()}
-          className="h-12 w-full rounded-xl bg-accent text-base font-bold text-black transition-opacity disabled:opacity-40"
+          className="h-12 w-full rounded-md bg-accent text-[13px] font-semibold uppercase tracking-[0.08em] text-on-accent hover:bg-accent-hover disabled:opacity-40"
         >
           {busy ? "Checking…" : "Unlock"}
         </button>

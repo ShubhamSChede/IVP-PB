@@ -14,7 +14,7 @@ Source of truth for the format: `IVP_Pickleball_2026_Swiss_Fixtures.xlsx.xlsx` (
 |---|---|---|
 | Framework | **Next.js 16 (App Router), plain JavaScript** | One repo for UI and API routes. |
 | Styling | Tailwind CSS v4 + CSS variables | Fast to build, one theme file (`app/globals.css`). |
-| Font / theme | **Poppins**, bold by default; black background, light-green text (`#a6f5bd`), accent `#4ade80` | As requested. |
+| Font / theme | **Inter**; IVP brand colours from ivp.in in a 60·30·10 split: white `#ffffff`, charcoal `#2f313a` (header, tab bar, hero cards, text), gold `#f2ce72` (actions, highlights; `#8c6d12` when gold is used as text on white). Corners are 4px, as on ivp.in. Logo: `public/logo-mark.png` | Matches the company site. `.theme-dark` swaps any block to charcoal |
 | Database | **Supabase Postgres** | Tables in `supabase/schema.sql`. |
 | Live updates | **Supabase Realtime** (`postgres_changes` + Presence) | Viewers and editors get changes pushed within ~100–300 ms. |
 | Writes | Next.js Route Handlers + Supabase **service role** key (server-only) | The public key can only read. Only the server can write, and only after checking the edit cookie. |
@@ -172,7 +172,7 @@ Base styles are written for phones. `sm:`/`md:`/`lg:` classes only **add** layou
 
 ```
 app/
-  layout.js, globals.css          theme + Poppins
+  layout.js, globals.css          theme (IVP tokens) + Inter
   page.js                         Live
   schedule/  matches/  standings/  teams/  teams/[code]/  chat/  rules/
   api/

@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import AppIconArt from "@/components/ui/AppIconArt";
+import { AppIcon } from "@/lib/appIcon";
 
 export const contentType = "image/png";
 
@@ -12,5 +12,5 @@ export function generateImageMetadata() {
 
 export default async function Icon({ id }) {
   const size = Number(await id);
-  return new ImageResponse(<AppIconArt size={size} />, { width: size, height: size });
+  return new ImageResponse(<AppIcon size={size} />, { width: size, height: size });
 }

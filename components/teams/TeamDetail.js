@@ -27,8 +27,8 @@ function TeamSwitcher({ teams, current }) {
           href={`/teams/${t.code}`}
           replace
           scroll={false}
-          className={`shrink-0 rounded-full border px-4 py-2.5 text-sm ${
-            t.code === current ? "border-accent bg-accent text-black" : "border-line text-muted hover:text-ink"
+          className={`shrink-0 rounded-md border px-4 py-2.5 text-sm ${
+            t.code === current ? "border-accent bg-accent text-on-accent" : "border-line text-muted hover:text-ink"
           }`}
         >
           {t.name}
@@ -42,7 +42,7 @@ function Tile({ label, value, sub, tone }) {
   return (
     <div className="rounded-2xl border border-line bg-surface p-3.5">
       <p className="text-xs font-medium text-muted">{label}</p>
-      <p className={`mt-1 text-2xl tabular-nums ${tone === "good" ? "text-accent" : tone === "bad" ? "text-danger/90" : "text-ink-strong"}`}>{value}</p>
+      <p className={`mt-1 text-2xl tabular-nums ${tone === "good" ? "text-accent-ink" : tone === "bad" ? "text-danger/90" : "text-ink-strong"}`}>{value}</p>
       {sub && <p className="text-xs font-medium text-muted">{sub}</p>}
     </div>
   );
@@ -63,13 +63,13 @@ function Section({ title, children, aside }) {
 function HistoryCard({ h, teamsById }) {
   const opp = teamsById.get(h.opponentId);
   const badge =
-    h.result === "W" ? "bg-accent text-black" : h.result === "L" ? "bg-danger/20 text-danger" : "";
+    h.result === "W" ? "bg-accent text-on-accent" : h.result === "L" ? "bg-danger/20 text-danger" : "";
   return (
     <li className="rounded-2xl border border-line bg-surface p-4">
       <div className="mb-2 flex items-center justify-between gap-2">
         <p className="text-xs font-medium text-muted">{h.stage} · {h.time}</p>
         {h.result ? (
-          <span className={`rounded-full px-2.5 py-1 text-xs ${badge}`}>{h.result === "W" ? "Won" : "Lost"}</span>
+          <span className={`rounded-md px-2.5 py-1 text-xs ${badge}`}>{h.result === "W" ? "Won" : "Lost"}</span>
         ) : (
           <StatusPill status={h.status} live={h.live} />
         )}
@@ -86,7 +86,7 @@ function HistoryCard({ h, teamsById }) {
           {h.courts.map((c) => (
             <li key={c.number} className="grid grid-cols-[2.25rem_3.5rem_1fr] items-center gap-2 text-sm">
               <span className="text-xs font-medium text-muted">C{c.number}</span>
-              <span className={`tabular-nums ${c.won ? "text-accent" : c.won === false ? "text-ink" : "text-muted"}`}>
+              <span className={`tabular-nums ${c.won ? "text-accent-ink" : c.won === false ? "text-ink" : "text-muted"}`}>
                 {c.us ?? "–"}–{c.them ?? "–"}
               </span>
               <span className="truncate text-xs font-medium text-muted">{c.ourPlayers.join(" & ")}</span>
@@ -111,7 +111,7 @@ export default function TeamDetail({ code }) {
     return (
       <div className="rounded-2xl border border-line bg-surface p-6 text-center">
         <p className="text-ink-strong">Team not found</p>
-        <Link href="/teams" className="mt-2 inline-block text-sm text-accent">All teams →</Link>
+        <Link href="/teams" className="mt-2 inline-block text-sm text-accent-ink">All teams →</Link>
       </div>
     );
   }
@@ -124,14 +124,14 @@ export default function TeamDetail({ code }) {
       <TeamSwitcher teams={teams} current={code} />
 
       {/* Hero */}
-      <section className="rounded-3xl border border-line bg-gradient-to-b from-accent/[0.08] to-surface p-5">
+      <section className="theme-dark rounded-md border-t-2 border-accent bg-bg p-5">
         <div className="flex items-start gap-3">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               {a.standing?.played > 0 && (
-                <span className="rounded-full bg-accent/15 px-2.5 py-1 text-xs text-accent">#{a.standing.rank} in Swiss</span>
+                <span className="rounded-md bg-accent/15 px-2.5 py-1 text-xs text-accent-ink">#{a.standing.rank} in Swiss</span>
               )}
-              {a.playoff && <span className="rounded-full bg-accent px-2.5 py-1 text-xs text-black">{a.playoff}</span>}
+              {a.playoff && <span className="rounded-md bg-accent px-2.5 py-1 text-xs text-on-accent">{a.playoff}</span>}
             </div>
             <h1 className="mt-2 text-[clamp(1.6rem,7vw,2.4rem)] leading-tight text-ink-strong">{team.name}</h1>
             <p className="text-sm font-medium text-muted">{team.captain ? `Captain ${team.captain}` : "No captain set"}</p>
@@ -146,7 +146,7 @@ export default function TeamDetail({ code }) {
           {a.form.length > 0 && (
             <div className="flex gap-1.5" aria-label={`Form: ${a.form.join(" ")}`}>
               {a.form.map((f, i) => (
-                <span key={i} className={`grid size-8 place-items-center rounded-lg text-sm ${f === "W" ? "bg-accent text-black" : "bg-danger/20 text-danger"}`}>
+                <span key={i} className={`grid size-8 place-items-center rounded-lg text-sm ${f === "W" ? "bg-accent text-on-accent" : "bg-danger/20 text-danger"}`}>
                   {f}
                 </span>
               ))}
@@ -172,8 +172,8 @@ export default function TeamDetail({ code }) {
               <div key={c.court} className="rounded-2xl border border-line bg-surface p-3">
                 <p className="text-xs font-medium text-muted">Court {c.court}</p>
                 <p className="mt-1 text-xl tabular-nums text-ink-strong">{c.won}–{c.lost}</p>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-line">
-                  <div className="h-full rounded-full bg-accent" style={{ width: total ? `${(c.won / total) * 100}%` : 0 }} />
+                <div className="mt-2 h-1.5 overflow-hidden rounded-md bg-line">
+                  <div className="h-full rounded-md bg-accent" style={{ width: total ? `${(c.won / total) * 100}%` : 0 }} />
                 </div>
               </div>
             );
@@ -196,7 +196,7 @@ export default function TeamDetail({ code }) {
       <Section title="Players" aside={a.hasLineups ? <span className="text-xs font-medium text-muted">sets won / played</span> : null}>
         {a.bestPair && (
           <div className="mb-3 rounded-2xl border border-accent/40 bg-accent/[0.06] p-4">
-            <p className="text-xs font-medium text-accent">Best pair</p>
+            <p className="text-xs font-medium text-accent-ink">Best pair</p>
             <p className="mt-1 text-base text-ink-strong">{a.bestPair.names.join(" & ")}</p>
             <p className="text-sm font-medium text-muted">Won {a.bestPair.won} of {a.bestPair.sets} sets together</p>
           </div>
@@ -206,7 +206,7 @@ export default function TeamDetail({ code }) {
             <li key={player.id} className="flex items-center gap-3 px-4 py-3">
               <span className="min-w-0 flex-1 truncate text-ink-strong">
                 {player.name}
-                {player.gender === "F" && <span className="ml-1.5 rounded-full border border-accent/50 px-1.5 text-[10px] text-accent">F</span>}
+                {player.gender === "F" && <span className="ml-1.5 rounded-md border border-accent/50 px-1.5 text-[10px] text-accent-ink">F</span>}
               </span>
               {a.hasLineups && (
                 <span className="text-right text-sm tabular-nums">

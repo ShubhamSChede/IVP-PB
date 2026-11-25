@@ -70,7 +70,7 @@ export default function ScoreStepper({ value, onSave, label, highlight = false, 
         aria-label={label}
         placeholder="–"
         className={`h-12 w-full min-w-0 bg-transparent text-center text-xl tabular-nums outline-none placeholder:text-muted/60 ${
-          highlight ? "text-accent" : "text-ink-strong"
+          highlight ? "text-accent-ink" : "text-ink-strong"
         } ${saving ? "opacity-60" : ""}`}
       />
       <button

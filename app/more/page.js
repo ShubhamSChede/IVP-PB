@@ -17,7 +17,7 @@ export default function MorePage() {
         {LINKS.map((l, i) => (
           <li key={l.href} className={i ? "border-t border-line/70" : ""}>
             <Link href={l.href} className="flex items-center gap-4 p-4 active:bg-surface-2">
-              <span className="grid size-11 place-items-center rounded-xl bg-accent/15 text-accent"><Icon name={l.icon} /></span>
+              <span className="grid size-11 place-items-center rounded-xl bg-accent/15 text-accent-ink"><Icon name={l.icon} /></span>
               <span className="min-w-0 flex-1">
                 <span className="block text-base text-ink-strong">{l.label}</span>
                 <span className="block text-sm font-medium text-muted">{l.desc}</span>

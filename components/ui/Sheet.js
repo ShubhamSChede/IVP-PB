@@ -38,10 +38,10 @@ export default function Sheet({ open, onClose, title, children, center = false }
     >
       <button aria-label="Close" className="sheet-backdrop absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
       <div className={`sheet-panel relative max-h-[90dvh] w-full overflow-y-auto border border-line bg-surface ${panel}`}>
-        {!center && <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-line md:hidden" />}
+        {!center && <div className="mx-auto mb-4 h-1.5 w-10 rounded-md bg-line md:hidden" />}
         <div className="mb-4 flex items-center justify-between gap-3">
           <h2 className="text-xl text-ink-strong">{title}</h2>
-          <button onClick={onClose} className="grid size-11 place-items-center rounded-full text-muted hover:bg-surface-2 hover:text-ink" aria-label="Close">
+          <button onClick={onClose} className="grid size-11 place-items-center rounded-md text-muted hover:bg-surface-2 hover:text-ink" aria-label="Close">
             <Icon name="close" />
           </button>
         </div>

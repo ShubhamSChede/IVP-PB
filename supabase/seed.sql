@@ -1,4 +1,4 @@
--- Generated from IVP_Pickleball_2026_Swiss_Fixtures.xlsx — dummy teams/players, blank scores.
+-- Generated from IVP_Pickleball_2026_Swiss_Fixtures.xlsx + final auction rosters; blank scores.
 -- Safe to re-run: wipes tournament tables first.
 truncate activity_log, chat_messages, schedule_items, matches, players, teams, rules, settings restart identity cascade;
 
@@ -48,20 +48,83 @@ insert into rules (code, category, topic, ruling, sort) values
   ('SPIRIT', 'Spirit of the Game', 'Spirit of the Game', 'Respect umpires, linesmen, and opponents. Any edge-case situation not listed above will be decided by the Tournament Organizers and their decision will be final.', 99);
 
 insert into teams (code, name, captain, sort) values
-  ('T01', 'Team 1', 'Captain 1', 1),
-  ('T02', 'Team 2', 'Captain 2', 2),
-  ('T03', 'Team 3', 'Captain 3', 3),
-  ('T04', 'Team 4', 'Captain 4', 4),
-  ('T05', 'Team 5', 'Captain 5', 5),
-  ('T06', 'Team 6', 'Captain 6', 6),
-  ('T07', 'Team 7', 'Captain 7', 7),
-  ('T08', 'Team 8', 'Captain 8', 8),
-  ('T09', 'Team 9', 'Captain 9', 9),
-  ('T10', 'Team 10', 'Captain 10', 10);
+  ('T01', 'Ankit Team', 'Ankit Dalvi', 1),
+  ('T02', 'Kapil Team', 'Kapil Kashyap', 2),
+  ('T03', 'Meeth Team', 'Meeth', 3),
+  ('T04', 'Haider Team', 'Haider', 4),
+  ('T05', 'Niki Team', 'Niki', 5),
+  ('T06', 'Palash Team', 'Palash', 6),
+  ('T07', 'Parth Team', 'Parth', 7),
+  ('T08', 'Shub Team', 'Shubham Chede', 8),
+  ('T09', 'Thushar Team', 'Thushar', 9),
+  ('T10', 'Pranav Team', 'Pranav', 10);
 
-insert into players (team_id, name, sort)
-select t.id, 'T' || t.sort || ' Player ' || p, p
-from teams t cross join generate_series(1, 6) p;
+-- Rosters (Pickleball Auction 2026 final teams). F = female; unmarked players are male.
+insert into players (team_id, name, gender, sort)
+select t.id, v.name, v.gender, v.sort
+from (values
+  ('T01', 'Ankit Dalvi', 'M', 1),
+  ('T01', 'Anush', 'M', 2),
+  ('T01', 'Nikhilesh', 'M', 3),
+  ('T01', 'Siddharth N', 'M', 4),
+  ('T01', 'Vishvam', 'M', 5),
+  ('T01', 'Urvi', 'F', 6),
+  ('T02', 'Kapil Kashyap', 'M', 1),
+  ('T02', 'Kuldeep', 'M', 2),
+  ('T02', 'Hima', 'M', 3),
+  ('T02', 'Keshav J', 'M', 4),
+  ('T02', 'Nihal', 'M', 5),
+  ('T02', 'Tejasi', 'F', 6),
+  ('T03', 'Meeth', 'M', 1),
+  ('T03', 'Surya', 'M', 2),
+  ('T03', 'Nikhil', 'M', 3),
+  ('T03', 'Gunitha', 'F', 4),
+  ('T03', 'Abhilash', 'M', 5),
+  ('T03', 'Amit', 'M', 6),
+  ('T04', 'Haider', 'M', 1),
+  ('T04', 'Sambhav', 'M', 2),
+  ('T04', 'Niranjan', 'M', 3),
+  ('T04', 'Aastha', 'F', 4),
+  ('T04', 'Raj', 'M', 5),
+  ('T04', 'Anuj', 'M', 6),
+  ('T05', 'Niki', 'M', 1),
+  ('T05', 'Sunday', 'M', 2),
+  ('T05', 'Aditya', 'M', 3),
+  ('T05', 'Rithika', 'F', 4),
+  ('T05', 'Meet V', 'M', 5),
+  ('T05', 'Sakshi', 'F', 6),
+  ('T06', 'Palash', 'M', 1),
+  ('T06', 'Sahil', 'M', 2),
+  ('T06', 'Kristy', 'F', 3),
+  ('T06', 'Yash P', 'M', 4),
+  ('T06', 'Neel', 'M', 5),
+  ('T06', 'Jay', 'M', 6),
+  ('T07', 'Parth', 'M', 1),
+  ('T07', 'Ayush', 'M', 2),
+  ('T07', 'Supreet', 'F', 3),
+  ('T07', 'Aryan V', 'M', 4),
+  ('T07', 'Yash', 'M', 5),
+  ('T07', 'Narain', 'M', 6),
+  ('T08', 'Shubham Chede', 'M', 1),
+  ('T08', 'Shiva', 'M', 2),
+  ('T08', 'Gautam', 'M', 3),
+  ('T08', 'Manohar', 'M', 4),
+  ('T08', 'Sanket', 'M', 5),
+  ('T08', 'Pooja', 'F', 6),
+  ('T09', 'Thushar', 'M', 1),
+  ('T09', 'Tushar', 'M', 2),
+  ('T09', 'Hrishikesh', 'M', 3),
+  ('T09', 'Deepak', 'M', 4),
+  ('T09', 'Aryan', 'M', 5),
+  ('T09', 'Pratiksha', 'F', 6),
+  ('T10', 'Pranav', 'M', 1),
+  ('T10', 'Fahad', 'M', 2),
+  ('T10', 'Yusuf', 'M', 3),
+  ('T10', 'Mahvish', 'F', 4),
+  ('T10', 'Sumeet', 'M', 5),
+  ('T10', 'Anurag', 'M', 6)
+) as v(code, name, gender, sort)
+join teams t on t.code = v.code;
 
 insert into matches (id, stage, round, label, wave, start_time, end_time, race_to, cap, a_source, b_source, sort) values
   ('SW-R1-T01', 'swiss', 1, 'Round 1', 'W01', '03:30 PM', '03:45 PM', 15, 17, null, null, 1),
@@ -84,12 +147,12 @@ insert into matches (id, stage, round, label, wave, start_time, end_time, race_t
   ('PL-Q2', 'playoff', null, 'Qualifier 2 (L-Q1 vs W-Elim)', 'W18', '08:40 PM', '09:05 PM', 21, 23, 'loser:PL-Q1', 'winner:PL-EL', 18),
   ('PL-GF', 'playoff', null, 'Grand Final (W-Q1 vs W-Q2)', 'W19', '09:20 PM', '09:45 PM', 21, 23, 'winner:PL-Q1', 'winner:PL-Q2', 19);
 
--- Round 1 fixed draw: T01 v T02, T03 v T04, ... T09 v T10
-update matches set team_a_id = (select id from teams where code = 'T01'), team_b_id = (select id from teams where code = 'T02') where id = 'SW-R1-T01';
-update matches set team_a_id = (select id from teams where code = 'T03'), team_b_id = (select id from teams where code = 'T04') where id = 'SW-R1-T02';
-update matches set team_a_id = (select id from teams where code = 'T05'), team_b_id = (select id from teams where code = 'T06') where id = 'SW-R1-T03';
-update matches set team_a_id = (select id from teams where code = 'T07'), team_b_id = (select id from teams where code = 'T08') where id = 'SW-R1-T04';
-update matches set team_a_id = (select id from teams where code = 'T09'), team_b_id = (select id from teams where code = 'T10') where id = 'SW-R1-T05';
+-- Round 1 draw: Kapil v Parth · Shub v Thushar · Palash v Pranav · Niki v Meeth · Ankit v Haider
+update matches set team_a_id = (select id from teams where name = 'Kapil Team'), team_b_id = (select id from teams where name = 'Parth Team') where id = 'SW-R1-T01';
+update matches set team_a_id = (select id from teams where name = 'Shub Team'), team_b_id = (select id from teams where name = 'Thushar Team') where id = 'SW-R1-T02';
+update matches set team_a_id = (select id from teams where name = 'Palash Team'), team_b_id = (select id from teams where name = 'Pranav Team') where id = 'SW-R1-T03';
+update matches set team_a_id = (select id from teams where name = 'Niki Team'), team_b_id = (select id from teams where name = 'Meeth Team') where id = 'SW-R1-T04';
+update matches set team_a_id = (select id from teams where name = 'Ankit Team'), team_b_id = (select id from teams where name = 'Haider Team') where id = 'SW-R1-T05';
 
 insert into schedule_items (wave, start_time, end_time, mins, phase, match_id, title, format, warmup, officials, sort) values
   ('W01', '03:30 PM', '03:45 PM', 15, 'Swiss Round 1', 'SW-R1-T01', null, '3 Parallel Sets (15 pts, Cap 17)', 'Wave 02 teams warm-up', 'Ct1: ___ | Ct2: ___ | Ct3: ___', 1),
