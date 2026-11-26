@@ -2,6 +2,7 @@ import Link from "next/link";
 import Icon from "@/components/ui/Icon";
 import { PageTitle } from "@/components/ui/Skeleton";
 import InstallHint from "@/components/layout/InstallHint";
+import DangerZone from "@/components/more/DangerZone";
 
 const LINKS = [
   { href: "/teams", label: "Teams", desc: "Rosters, history & player stats", icon: "teams" },
@@ -28,6 +29,7 @@ export default function MorePage() {
         ))}
       </ul>
       <InstallHint />
+      <DangerZone />
     </div>
   );
 }
