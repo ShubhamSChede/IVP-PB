@@ -1,7 +1,7 @@
 import { getEditor } from "@/lib/auth";
 import { getAdminSupabase } from "@/lib/supabase/admin";
 
-// POST /api/chat { author, body } — anyone can post; editors are tagged.
+// POST /api/chat { author, body, reply_to? } — anyone can post; editors are tagged.
 // Per-IP limits (per server instance): 1 message / 1.5s, 12 / minute.
 
 const recent = new Map(); // ip -> timestamps
@@ -26,13 +26,22 @@ export async function POST(request) {
   if (!author) return Response.json({ error: "Pick a name first" }, { status: 400 });
   if (!body) return Response.json({ error: "Message is empty" }, { status: 400 });
 
+  // Reply: keep a short snapshot of the original for the quote.
+  const db = getAdminSupabase();
+  const row = { author, body, is_editor: Boolean(editor) };
+  const replyTo = Number(payload.reply_to);
+  if (Number.isSafeInteger(replyTo) && replyTo > 0) {
+    const { data: orig } = await db.from("chat_messages").select("id, author, body").eq("id", replyTo).maybeSingle();
+    if (orig) Object.assign(row, { reply_to: orig.id, reply_author: orig.author, reply_body: orig.body.slice(0, 140) });
+  }
+
   times.push(now);
   recent.set(ip, times);
   if (recent.size > 5000) recent.clear(); // keep memory bounded
 
-  const { data, error } = await getAdminSupabase()
+  const { data, error } = await db
     .from("chat_messages")
-    .insert({ author, body, is_editor: Boolean(editor) })
+    .insert(row)
     .select()
     .single();
   if (error) return Response.json({ error: error.message }, { status: 500 });

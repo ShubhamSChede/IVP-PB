@@ -132,13 +132,13 @@ export default function ScheduleView() {
             const done = r?.status === "completed";
             const isBreak = !m;
             return (
-              <li key={it.id} id={isNow ? "wave-now" : undefined} className="grid scroll-mt-40 grid-cols-[4.25rem_1fr] gap-3">
+              <li key={it.id} id={isNow ? "wave-now" : undefined} className="grid scroll-mt-40 grid-cols-[4.25rem_minmax(0,1fr)] gap-3">
                 {/* Time rail */}
                 <div className="relative pt-4 text-right">
                   <p className={`text-sm tabular-nums ${isNow ? "text-accent-ink" : done ? "text-muted" : "text-ink-strong"}`}>{it.start_time?.replace(" ", " ")}</p>
                   <p className="text-[11px] font-medium text-muted">{it.mins ? `${it.mins}m` : ""}</p>
                 </div>
-                <div className="relative border-l border-line pb-3 pl-4">
+                <div className="relative min-w-0 border-l border-line pb-3 pl-4">
                   <span
                     className={`absolute top-5 -left-[5px] size-2.5 rounded-full ${
                       isNow ? "bg-accent shadow-[0_0_10px_var(--accent)]" : done ? "bg-muted" : "border border-line bg-bg"
@@ -157,11 +157,11 @@ export default function ScheduleView() {
                         {m ? (
                           <Link href="/matches" className="mt-0.5 block truncate text-base text-ink-strong">{fixture}</Link>
                         ) : (
-                          <p className="mt-0.5 text-base text-ink-strong">{fixture}</p>
+                          <p className="mt-0.5 text-base wrap-break-word text-ink-strong">{fixture}</p>
                         )}
                       </div>
                       {m && r.status !== "pending" ? (
-                        <div className="flex flex-col items-end gap-1">
+                        <div className="flex shrink-0 flex-col items-end gap-1">
                           <StatusPill status={r.status} live={m.is_live} />
                           <span className="text-sm tabular-nums text-ink-strong">{r.setsA}–{r.setsB}</span>
                         </div>
@@ -170,11 +170,11 @@ export default function ScheduleView() {
                       ) : null}
                       {isEditor && <EditIconButton label={`Edit ${it.wave}`} onClick={() => setEditing(it)} />}
                     </div>
-                    <p className="mt-1.5 text-xs font-medium leading-relaxed text-muted">
+                    <p className="mt-1.5 text-xs font-medium leading-relaxed wrap-break-word text-muted">
                       {[it.format, it.warmup && `Warm-up: ${it.warmup}`].filter(Boolean).join(" · ")}
                     </p>
                     {it.officials && !/^Ct1: ___/.test(it.officials) && (
-                      <p className="mt-1 text-xs font-medium text-muted">Officials: {it.officials}</p>
+                      <p className="mt-1 text-xs font-medium wrap-break-word text-muted">Officials: {it.officials}</p>
                     )}
                   </div>
                 </div>

@@ -5,6 +5,12 @@ import { api } from "@/lib/api";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 
 // Edit-mode state + editor presence ("3 editing", "Asha is on T04").
+// Edit locks: an editor unlocks ONE thing at a time with its pencil: a whole
+// tie ("SW-R1-T01") or one court ("SW-R1-T01:c2"). Everything else stays
+// read-only for them, and other editors see who holds what. Auto-locks after
+// a couple of idle minutes.
+
+const IDLE_LOCK_MS = 2 * 60 * 1000;
 
 const EditorContext = createContext(null);
 
@@ -14,6 +20,8 @@ export function EditorProvider({ children }) {
   const [others, setOthers] = useState([]); // other editors: [{ name, editing }]
   const channelRef = useRef(null);
   const stateRef = useRef({ editing: null });
+  const [target, setTarget] = useState(null); // what this editor has unlocked
+  const idleRef = useRef(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,6 +71,26 @@ export function EditorProvider({ children }) {
     [editor]
   );
 
+  /** Unlock a tie or court for editing (null = lock everything). */
+  const unlockTarget = useCallback(
+    (t) => {
+      clearTimeout(idleRef.current);
+      setTarget(t);
+      setEditing(t);
+      if (t) idleRef.current = setTimeout(() => { setTarget(null); setEditing(null); }, IDLE_LOCK_MS);
+    },
+    [setEditing]
+  );
+
+  /** Keep the current unlock alive while the editor is using it. */
+  const bump = useCallback(() => {
+    if (!stateRef.current.editing) return;
+    clearTimeout(idleRef.current);
+    idleRef.current = setTimeout(() => { setTarget(null); setEditing(null); }, IDLE_LOCK_MS);
+  }, [setEditing]);
+
+  useEffect(() => () => clearTimeout(idleRef.current), []);
+
   const unlock = useCallback(async (code, name) => {
     const d = await api("/api/auth/unlock", { body: { code, name } });
     setEditor(d.editor);
@@ -71,6 +99,7 @@ export function EditorProvider({ children }) {
 
   const lock = useCallback(async () => {
     await api("/api/auth/lock");
+    setTarget(null);
     setEditor(null);
   }, []);
 
@@ -80,8 +109,8 @@ export function EditorProvider({ children }) {
   }, []);
 
   const value = useMemo(
-    () => ({ editor, isEditor: Boolean(editor), checked, others, setEditing, unlock, lock, handleAuthError }),
-    [editor, checked, others, setEditing, unlock, lock, handleAuthError]
+    () => ({ editor, isEditor: Boolean(editor), checked, others, setEditing, target: editor ? target : null, unlockTarget, bump, unlock, lock, handleAuthError }),
+    [editor, checked, others, setEditing, target, unlockTarget, bump, unlock, lock, handleAuthError]
   );
 
   return <EditorContext.Provider value={value}>{children}</EditorContext.Provider>;

@@ -17,7 +17,9 @@ const TABLES = {
   activity_log: { pk: "id", order: "created_at", desc: true, limit: 40 },
   schedule_items: { pk: "id", order: "sort" },
   rules: { pk: "id", order: "sort" },
-  chat_messages: { pk: "id", order: "created_at", desc: true, limit: 150 },
+  chat_messages: { pk: "id", order: "created_at", desc: true, limit: 150, keep: (r) => r.pinned_at },
+  // optional: until the chat migration is run, this just stays empty
+  chat_reactions: { pk: "id", order: "created_at", limit: 5000, optional: true },
 };
 
 const CHAT_SEEN_KEY = "pb_chat_seen";
@@ -25,14 +27,16 @@ const CHAT_SEEN_KEY = "pb_chat_seen";
 const LiveDataContext = createContext(null);
 
 function sortRows(table, rows) {
-  const { order, desc, limit } = TABLES[table];
+  const { order, desc, limit, keep } = TABLES[table];
   const sorted = [...rows].sort((a, b) => {
     const x = a[order];
     const y = b[order];
     const cmp = x < y ? -1 : x > y ? 1 : 0;
     return desc ? -cmp : cmp;
   });
-  return limit ? sorted.slice(0, limit) : sorted;
+  if (!limit) return sorted;
+  // rows past the limit survive if `keep` says so (pinned chat messages)
+  return sorted.filter((r, i) => i < limit || keep?.(r));
 }
 
 function upsert(table, rows, incoming) {
@@ -62,7 +66,15 @@ export function LiveDataProvider({ children }) {
           let q = sb.from(table).select("*").order(cfg.order, { ascending: !cfg.desc });
           if (cfg.limit) q = q.limit(cfg.limit);
           const { data: rows, error: err } = await q;
-          if (err) throw err;
+          if (err) {
+            if (cfg.optional) return [table, []];
+            throw err;
+          }
+          if (table === "chat_messages") {
+            // pinned messages can be older than the newest 150
+            const { data: pinned } = await sb.from(table).select("*").not("pinned_at", "is", null);
+            if (pinned?.length) return [table, upsert(table, rows, pinned)];
+          }
           return [table, rows];
         })
       );
@@ -82,9 +94,7 @@ export function LiveDataProvider({ children }) {
     // Initial load (async — state is set after the fetch resolves).
     const first = setTimeout(loadAll, 0);
 
-    let channel = sb.channel("live-db");
-    for (const table of Object.keys(TABLES)) {
-      channel = channel.on("postgres_changes", { event: "*", schema: "public", table }, (payload) => {
+    const onChange = (table) => (payload) => {
         setData((prev) => {
           const pk = TABLES[table].pk;
           if (payload.eventType === "DELETE") {
@@ -92,8 +102,19 @@ export function LiveDataProvider({ children }) {
           }
           return { ...prev, [table]: upsert(table, prev[table], [payload.new]) };
         });
-      });
+      };
+
+    let channel = sb.channel("live-db");
+    for (const [table, cfg] of Object.entries(TABLES)) {
+      if (!cfg.optional) channel = channel.on("postgres_changes", { event: "*", schema: "public", table }, onChange(table));
     }
+    // Optional tables get their own channel: if one isn't set up yet, it
+    // can't take the core live updates down with it.
+    let extra = sb.channel("live-db-extra");
+    for (const [table, cfg] of Object.entries(TABLES)) {
+      if (cfg.optional) extra = extra.on("postgres_changes", { event: "*", schema: "public", table }, onChange(table));
+    }
+    extra.subscribe();
     channel.subscribe((status) => {
       if (status === "SUBSCRIBED") {
         setConnection("live");
@@ -113,6 +134,7 @@ export function LiveDataProvider({ children }) {
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", loadAll);
       sb.removeChannel(channel);
+      sb.removeChannel(extra);
     };
   }, [loadAll]);
 
@@ -144,6 +166,11 @@ export function LiveDataProvider({ children }) {
       if (!playersByTeam.has(p.team_id)) playersByTeam.set(p.team_id, []);
       playersByTeam.get(p.team_id).push(p);
     }
+    const reactionsByMessage = new Map();
+    for (const x of data.chat_reactions) {
+      if (!reactionsByMessage.has(x.message_id)) reactionsByMessage.set(x.message_id, []);
+      reactionsByMessage.get(x.message_id).push(x);
+    }
     const unreadChat = data.chat_messages.filter((m) => m.created_at > chatSeenAt).length;
     return {
       ...data,
@@ -151,6 +178,7 @@ export function LiveDataProvider({ children }) {
       playersByTeam,
       playersById: new Map(data.players.map((p) => [p.id, p])),
       settingsMap: settings,
+      reactionsByMessage,
       unreadChat: chatSeenAt ? unreadChat : 0, // first visit: no badge for old history
       markChatSeen,
       loaded,

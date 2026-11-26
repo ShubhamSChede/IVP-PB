@@ -83,7 +83,7 @@ export default function MatchesView() {
 
   return (
     <div>
-      <PageTitle title="Matches" subtitle="Each tie is 3 sets on Courts 1–3 at once. Best of 3 wins." />
+      <PageTitle title="Matches" subtitle="Each tie is 3 sets on Courts 3–5 at once. Best of 3 wins." />
 
       {/* Stage tabs — full-width segmented control on phones */}
       <div className="sticky top-[calc(5.5rem+2px+env(safe-area-inset-top))] z-30 -mx-4 mb-4 bg-bg/85 px-4 py-2 backdrop-blur-xl md:-mx-6 md:px-6 lg:top-[calc(6rem+2px)]">

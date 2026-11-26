@@ -16,7 +16,20 @@ export default function ScoreStepper({ value, onSave, label, highlight = false, 
   const seq = useRef(0);
   const latest = useRef(null);
 
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const saveRef = useRef(onSave);
+  useEffect(() => {
+    saveRef.current = onSave;
+  });
+  // Unmounting (e.g. the court gets locked) with a save still pending: send it.
+  useEffect(
+    () => () => {
+      if (!timer.current) return;
+      clearTimeout(timer.current);
+      const v = latest.current;
+      saveRef.current(v === "" || v == null ? null : Number(v));
+    },
+    []
+  );
 
   async function commit(next) {
     clearTimeout(timer.current);

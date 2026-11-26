@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Flash from "@/components/ui/Flash";
 import Icon from "@/components/ui/Icon";
 import Sheet from "@/components/ui/Sheet";
@@ -88,6 +88,25 @@ function LineupLine({ court }) {
   );
 }
 
+/** Pencil that unlocks one tie / court for this editor; ✓ locks it again. */
+function LockToggle({ active, onClick, label, held }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      aria-label={active ? `Done editing ${label}` : `Edit ${label}`}
+      title={held ? `${held} is editing this` : undefined}
+      className={`relative grid size-8 shrink-0 place-items-center rounded-md border transition-colors ${
+        active ? "border-accent bg-accent text-on-accent" : "border-line text-muted hover:text-ink"
+      }`}
+    >
+      <Icon name={active ? "check" : "edit"} size={15} strokeWidth={2.2} />
+      {held && !active && <span className="absolute -top-1 -right-1 size-2.5 rounded-full border-2 border-surface bg-warn" />}
+    </button>
+  );
+}
+
 function TeamName({ team, fallback, cls, align = "left" }) {
   if (!team) return <p className={`min-w-0 truncate text-base text-muted sm:text-lg ${align === "right" ? "text-right" : ""}`}>{fallback}</p>;
   return (
@@ -102,17 +121,33 @@ function TeamName({ team, fallback, cls, align = "left" }) {
 
 export default function TieCard({ match, compact = false }) {
   const { teamsById, playersById, applyRows } = useLiveData();
-  const { isEditor, others, setEditing, handleAuthError } = useEditor();
+  const { isEditor, others, target, unlockTarget, bump, handleAuthError } = useEditor();
   const toast = useToast();
   const [sheet, setSheet] = useState(null); // 'teams' | 'lineups' | null
-  const idleTimer = useRef(null);
 
   const r = tieResult(match);
   const A = teamsById.get(match.team_a_id);
   const B = teamsById.get(match.team_b_id);
   const hasTeams = Boolean(A && B);
-  const editingHere = others.filter((o) => o.editing === match.id);
   const canScore = isEditor && hasTeams;
+
+  // Edit locks: the tie itself (teams / lineups / on court) or a single court.
+  const courtTarget = (c) => `${match.id}:${c.key}`;
+  const matchUnlocked = target === match.id;
+  const holders = (t) => others.filter((o) => o.editing === t).map((o) => o.name).join(", ");
+  const editingHere = others.filter((o) => o.editing && o.editing.split(":")[0] === match.id);
+  const whatOf = (t) => {
+    const key = t.split(":")[1];
+    const c = key && tieResult(match).courts.find((x) => x.key === key);
+    return c ? `Court ${c.number}` : "this tie";
+  };
+
+  function toggle(t) {
+    if (target === t) return unlockTarget(null);
+    const held = holders(t);
+    if (held && !window.confirm(`${held} is already editing ${whatOf(t)}. Edit anyway?`)) return;
+    unlockTarget(t);
+  }
 
   const lineupFor = (c) => {
     const l = match.lineups?.[c.key] ?? {};
@@ -133,12 +168,9 @@ export default function TieCard({ match, compact = false }) {
   }
   const saveField = (field) => (value) => save({ [field]: value }).catch(() => {});
 
-  // Presence: mark this tie as "being edited" while the editor interacts.
+  // Using an unlocked tie/court keeps it unlocked (it auto-locks when idle).
   function touch() {
-    if (!isEditor) return;
-    setEditing(match.id);
-    clearTimeout(idleTimer.current);
-    idleTimer.current = setTimeout(() => setEditing(null), 20000);
+    if (target && target.split(":")[0] === match.id) bump();
   }
 
   const nameCls = (side) => (r.winnerSide === side ? "text-accent-ink" : r.winnerSide ? "text-muted" : "text-ink-strong");
@@ -157,7 +189,10 @@ export default function TieCard({ match, compact = false }) {
         <p className="min-w-0 truncate text-xs font-medium text-muted">
           {match.stage === "playoff" ? match.label.split(" (")[0] : match.id.replace("SW-", "")} · {match.start_time}
         </p>
-        <StatusPill status={r.status} live={match.is_live} />
+        <div className="flex shrink-0 items-center gap-2">
+          <StatusPill status={r.status} live={match.is_live} />
+          {isEditor && <LockToggle active={matchUnlocked} onClick={() => toggle(match.id)} label="this tie" held={holders(match.id)} />}
+        </div>
       </div>
 
       {/* Teams + sets */}
@@ -172,23 +207,24 @@ export default function TieCard({ match, compact = false }) {
       {editingHere.length > 0 && (
         <p className="mt-2 flex items-center gap-1.5 text-xs text-warn">
           <span className="size-1.5 animate-pulse rounded-full bg-warn" />
-          {editingHere.map((o) => o.name).join(", ")} editing now
+          {editingHere.map((o) => `${o.name} · ${whatOf(o.editing)}`).join(", ")}
         </p>
       )}
 
       {/* Courts */}
       {showCourts && (
-        <div className={`mt-4 ${canScore ? "space-y-3" : "divide-y divide-line/70 border-t border-line/70"}`}>
+        <div className="mt-4 divide-y divide-line/70 border-t border-line/70">
           {r.courts.map((c) =>
-            canScore ? (
-              <div key={c.key}>
-                <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted">
-                  <span>Court {c.number}</span>
+            canScore && target === courtTarget(c) ? (
+              <div key={c.key} className="py-2.5">
+                <div className="mb-1.5 flex items-center justify-between gap-2 text-xs font-medium text-muted">
+                  <span className="text-accent-ink">Court {c.number} · editing</span>
                   {!c.valid && (
-                    <span className="flex items-center gap-1 text-warn">
-                      <Icon name="warn" size={14} /> Check score (to {match.race_to}, cap {match.cap})
+                    <span className="flex min-w-0 items-center gap-1 text-warn">
+                      <Icon name="warn" size={14} /> <span className="truncate">Check score (to {match.race_to}, cap {match.cap})</span>
                     </span>
                   )}
+                  <LockToggle active onClick={() => toggle(courtTarget(c))} label={`Court ${c.number}`} />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <ScoreStepper value={c.a} label={`Court ${c.number} ${A.name}`} highlight={c.winner === "a"} onSave={saveField(`${c.key}_a`)} />
@@ -198,7 +234,7 @@ export default function TieCard({ match, compact = false }) {
               </div>
             ) : (
               <div key={c.key} className="py-2">
-                <div className="grid grid-cols-[4.5rem_1fr_auto_1fr] items-center text-sm">
+                <div className={`grid items-center text-sm ${canScore ? "grid-cols-[4.5rem_1fr_auto_1fr_2rem]" : "grid-cols-[4.5rem_1fr_auto_1fr]"}`}>
                   <span className="font-medium text-muted">Court {c.number}</span>
                   <span className={`text-right text-lg tabular-nums ${c.winner === "a" ? "text-accent-ink" : "text-ink-strong"}`}>
                     <Flash value={c.a}>{c.a ?? "–"}</Flash>
@@ -207,6 +243,9 @@ export default function TieCard({ match, compact = false }) {
                   <span className={`text-lg tabular-nums ${c.winner === "b" ? "text-accent-ink" : "text-ink-strong"}`}>
                     <Flash value={c.b}>{c.b ?? "–"}</Flash>
                   </span>
+                  {canScore && (
+                    <LockToggle active={false} onClick={() => toggle(courtTarget(c))} label={`Court ${c.number}`} held={holders(courtTarget(c))} />
+                  )}
                 </div>
                 <LineupLine court={lineupFor(c)} />
               </div>
@@ -221,7 +260,7 @@ export default function TieCard({ match, compact = false }) {
           Points {r.ptsA} – {r.ptsB}
         </p>
       )}
-      {isEditor && (
+      {isEditor && matchUnlocked && (
         <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
           <button onClick={() => setSheet("teams")} className="h-11 rounded-xl border border-line text-muted hover:text-ink">
             Teams
