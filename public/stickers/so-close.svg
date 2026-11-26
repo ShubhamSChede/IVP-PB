@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="So close">
+<title>So close</title>
+<defs><filter id="s" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".22"/></filter></defs>
+<g filter="url(#s)">
+<rect x="76" y="56" width="360" height="232" rx="26" fill="#ffffff"/><rect x="92" y="72" width="328" height="200" rx="16" fill="#2f313a"/><text x="256" y="204" text-anchor="middle" font-size="96" font-weight="900" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#f2ce72" letter-spacing="2">16-14</text><circle cx="122" cy="102" r="9" fill="#d64545"/><circle cx="390" cy="102" r="9" fill="#f2ce72" opacity=".6"/><text x="316" y="452" text-anchor="middle" font-size="96" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#ffffff" stroke="#ffffff" stroke-width="30" stroke-linejoin="round">SO CLOSE</text>
+<text x="316" y="452" text-anchor="middle" font-size="96" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#2f313a">SO CLOSE</text>
+
+</g>
+</svg>

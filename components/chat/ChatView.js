@@ -8,6 +8,7 @@ import { api } from "@/lib/api";
 import { useEditor } from "@/components/providers/EditorProvider";
 import { useLiveData } from "@/components/providers/LiveDataProvider";
 import { useToast } from "@/components/providers/ToastProvider";
+import stickerPack from "@/public/stickers/manifest.json";
 
 // Messenger-style chat: newest at the bottom, composer pinned above the tab
 // bar, auto-scrolls on new messages only if you're already at the bottom.
@@ -23,6 +24,19 @@ const REACTIONS = [
   ["cry", "😢"],
 ];
 const EMOJI = Object.fromEntries(REACTIONS);
+
+// Stickers ship with the app (public/stickers). A sticker message is just the
+// text "[sticker:<id>]", so no storage or schema is needed.
+const STICKERS = new Map(stickerPack.stickers.map((s) => [s.id, s]));
+const stickerOf = (body) => {
+  const m = /^\[sticker:([a-z0-9-]+)\]$/.exec(body ?? "");
+  return m ? STICKERS.get(m[1]) ?? null : null;
+};
+/** One-line text for quotes, pins and previews. */
+const preview = (body) => {
+  const st = stickerOf(body);
+  return st ? `Sticker · ${st.title}` : body;
+};
 const STICKY_TOP = "top-[calc(5.5rem+2px+env(safe-area-inset-top))] lg:top-[calc(6rem+2px)]";
 
 const time = (iso) => new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
@@ -85,7 +99,7 @@ function PinnedBar({ pins, isEditor, onUnpin, toast }) {
             <Icon name="pin" size={12} /> Pinned{pins.length > 1 ? ` · ${i + 1}/${pins.length}` : ""}
           </p>
           <p className="truncate text-sm text-ink-strong">
-            <span className="font-semibold">{pin.author}:</span> {pin.body}
+            <span className="font-semibold">{pin.author}:</span> {preview(pin.body)}
           </p>
         </button>
         {isEditor && (
@@ -144,6 +158,7 @@ export default function ChatView() {
   const [selected, setSelected] = useState(null); // message id with the action bar open
   const [replyTo, setReplyTo] = useState(null); // message being replied to
   const [reactor, setReactor] = useState(null); // this device's reaction id
+  const [picker, setPicker] = useState(false); // sticker tray open
   const stick = useRef(true);
   const firstScroll = useRef(true);
   const inputRef = useRef(null);
@@ -191,22 +206,26 @@ export default function ChatView() {
     markChatSeen(newest);
   }, [loaded, newest, markChatSeen]);
 
-  async function send(e) {
-    e.preventDefault();
-    const body = text.trim();
+  async function post(body, { clearText = false } = {}) {
     if (!body || sending) return;
     setSending(true);
     stick.current = true;
     try {
       const { message } = await api("/api/chat", { body: { author: me, body, reply_to: replyTo?.id ?? null } });
       applyRows("chat_messages", message);
-      setText("");
+      if (clearText) setText("");
       setReplyTo(null);
+      setPicker(false);
     } catch (err) {
       toast(err.message, "error");
     } finally {
       setSending(false);
     }
+  }
+
+  function send(e) {
+    e.preventDefault();
+    post(text.trim(), { clearText: true });
   }
 
   async function remove(id) {
@@ -264,7 +283,7 @@ export default function ChatView() {
   }
 
   return (
-    <div className={replyTo ? "pb-40" : "pb-24"}>
+    <div className={picker ? "pb-[calc(40vh+8rem)]" : replyTo ? "pb-40" : "pb-24"}>
       <div className="mb-4">
         <h1 className="text-[clamp(1.6rem,5vw,2.4rem)] leading-tight text-ink-strong">Chat</h1>
         <p className="text-sm font-medium text-muted">Everyone at the event can see this. Tap a message to react or reply.</p>
@@ -295,6 +314,7 @@ export default function ChatView() {
             const myReaction = reactor ? reactions.find((x) => x.reactor === reactor)?.emoji : null;
             const counts = REACTIONS.map(([k]) => [k, reactions.filter((x) => x.emoji === k).length]).filter(([, n]) => n > 0);
             const isSel = selected === m.id;
+            const sticker = stickerOf(m.body);
             return (
               <li
                 key={m.id}
@@ -330,8 +350,10 @@ export default function ChatView() {
                     onClick={() => setSelected(isSel ? null : m.id)}
                     onKeyDown={(e) => e.key === "Enter" && setSelected(isSel ? null : m.id)}
                     aria-label={`Message from ${m.author}. Tap for reactions and reply`}
-                    className={`cursor-pointer select-text rounded-2xl px-3.5 py-2.5 text-[15px] leading-snug transition-[filter] ${isSel ? "brightness-95" : ""} ${
-                      mine ? "rounded-br-md bg-accent text-on-accent" : m.is_editor ? "rounded-bl-md border border-accent/40 bg-accent/10 text-ink-strong" : "rounded-bl-md bg-surface-2 text-ink-strong"
+                    className={`cursor-pointer select-text rounded-2xl text-[15px] leading-snug transition-[filter] ${isSel ? "brightness-95" : ""} ${
+                      sticker
+                        ? `${m.reply_author ? "bg-surface-2 p-2" : ""} ${isSel ? "bg-surface-2" : ""}`
+                        : `px-3.5 py-2.5 ${mine ? "rounded-br-md bg-accent text-on-accent" : m.is_editor ? "rounded-bl-md border border-accent/40 bg-accent/10 text-ink-strong" : "rounded-bl-md bg-surface-2 text-ink-strong"}`
                     }`}
                   >
                     {m.reply_author && (
@@ -347,10 +369,15 @@ export default function ChatView() {
                         }`}
                       >
                         <span className="block text-xs font-semibold">{m.reply_author}</span>
-                        <span className="line-clamp-2 opacity-80">{m.reply_body}</span>
+                        <span className="line-clamp-2 opacity-80">{preview(m.reply_body)}</span>
                       </span>
                     )}
-                    <span className="block whitespace-pre-wrap wrap-break-word">{m.body}</span>
+                    {sticker ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- tiny static SVGs
+                      <img src={sticker.src} alt={`Sticker: ${sticker.title}`} width={132} height={132} loading="lazy" draggable={false} className="block size-[132px] select-none" />
+                    ) : (
+                      <span className="block whitespace-pre-wrap wrap-break-word">{m.body}</span>
+                    )}
                     {m.pinned_at && (
                       <span className="mt-1 flex items-center justify-end gap-1 text-[10px] font-semibold uppercase tracking-wider opacity-60">
                         <Icon name="pin" size={10} /> Pinned
@@ -399,14 +426,43 @@ export default function ChatView() {
                   <Icon name="reply" size={16} className="shrink-0 text-accent-ink" />
                   <div className="min-w-0 flex-1">
                     <p className="text-xs font-semibold text-accent-ink">Replying to {replyTo.author === me ? "yourself" : replyTo.author}</p>
-                    <p className="truncate text-sm text-muted">{replyTo.body}</p>
+                    <p className="truncate text-sm text-muted">{preview(replyTo.body)}</p>
                   </div>
                   <button onClick={() => setReplyTo(null)} className="grid size-9 shrink-0 place-items-center text-muted hover:text-ink" aria-label="Cancel reply">
                     <Icon name="close" size={16} />
                   </button>
                 </div>
               )}
+              {picker && (
+                <div className="mb-2 rounded-md border border-line bg-surface p-2 shadow-[0_8px_24px_-12px_rgba(47,49,58,0.35)]">
+                  <p className="mb-1 px-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted">{stickerPack.pack} stickers</p>
+                  <div className="grid max-h-[40vh] grid-cols-4 gap-1 overflow-y-auto sm:grid-cols-6">
+                    {stickerPack.stickers.map((st) => (
+                      <button
+                        key={st.id}
+                        type="button"
+                        disabled={sending}
+                        onClick={() => post(`[sticker:${st.id}]`)}
+                        className="grid aspect-square place-items-center rounded-md p-1 transition-transform hover:bg-surface-2 active:scale-90 disabled:opacity-50"
+                        aria-label={`Send sticker: ${st.title}`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element -- tiny static SVGs */}
+                        <img src={st.src} alt="" width={72} height={72} className="size-full max-w-[84px]" draggable={false} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <form onSubmit={send} className="flex items-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPicker((v) => !v)}
+                  aria-pressed={picker}
+                  aria-label={picker ? "Close stickers" : "Stickers"}
+                  className={`grid size-12 shrink-0 place-items-center rounded-md border ${picker ? "border-accent bg-accent/20 text-accent-ink" : "border-line text-muted hover:text-ink"}`}
+                >
+                  <Icon name={picker ? "close" : "smile"} size={22} />
+                </button>
                 <TextInput
                   ref={inputRef}
                   value={text}

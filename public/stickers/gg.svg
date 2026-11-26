@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="GG">
+<title>GG</title>
+<defs><filter id="s" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".22"/></filter></defs>
+<g filter="url(#s)">
+<g transform="translate(176 170) rotate(-28)"><rect x="-82" y="-128" width="164" height="200" rx="72" fill="#ffffff"/><rect x="-24" y="52" width="48" height="118" rx="16" fill="#ffffff"/><rect x="-14" y="60" width="28" height="100" rx="10" fill="#2f313a"/><rect x="-70" y="-116" width="140" height="176" rx="62" fill="#2f313a" stroke="#f2ce72" stroke-width="10"/><path d="M-30,-70 h60" stroke="#f2ce72" stroke-width="8" stroke-linecap="round" opacity=".6"/></g><g transform="translate(336 170) rotate(28)"><rect x="-82" y="-128" width="164" height="200" rx="72" fill="#ffffff"/><rect x="-24" y="52" width="48" height="118" rx="16" fill="#ffffff"/><rect x="-14" y="60" width="28" height="100" rx="10" fill="#2f313a"/><rect x="-70" y="-116" width="140" height="176" rx="62" fill="#f2ce72" stroke="#2f313a" stroke-width="10"/><path d="M-30,-70 h60" stroke="#2f313a" stroke-width="8" stroke-linecap="round" opacity=".6"/></g><text x="320" y="456" text-anchor="middle" font-size="170" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-6)"  fill="#ffffff" stroke="#ffffff" stroke-width="30" stroke-linejoin="round">GG</text>
+<text x="320" y="456" text-anchor="middle" font-size="170" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-6)"  fill="#f2ce72" stroke="#2f313a" stroke-width="10" stroke-linejoin="round" paint-order="stroke">GG</text>
+
+</g>
+</svg>

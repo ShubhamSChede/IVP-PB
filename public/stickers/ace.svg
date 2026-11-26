@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Ace!">
+<title>Ace!</title>
+<defs><filter id="s" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".22"/></filter></defs>
+<g filter="url(#s)">
+<path d="M60,150 h110" stroke="#2f313a" stroke-width="16" stroke-linecap="round"/><path d="M68,195 h85" stroke="#2f313a" stroke-width="16" stroke-linecap="round"/><path d="M76,240 h60" stroke="#2f313a" stroke-width="16" stroke-linecap="round"/><circle cx="290" cy="205" r="126" fill="#ffffff"/><circle cx="290" cy="205" r="112" fill="#f2ce72" stroke="#2f313a" stroke-width="9"/><circle cx="239.6" cy="165.8" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="301.2" cy="143.4" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="346.0" cy="188.2" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="273.2" cy="210.6" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="329.2" cy="249.8" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="234.0" cy="244.2" r="10.1" fill="#2f313a" opacity=".85"/><circle cx="290.0" cy="272.2" r="10.1" fill="#2f313a" opacity=".85"/><path d="M228.39999999999998,135.56 a89.60000000000001,89.60000000000001 0 0 1 56.0,-24.64" stroke="#ffffff" stroke-width="11" stroke-linecap="round" fill="none" opacity=".7"/><text x="318" y="440" text-anchor="middle" font-size="140" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#ffffff" stroke="#ffffff" stroke-width="30" stroke-linejoin="round">ACE!</text>
+<text x="318" y="440" text-anchor="middle" font-size="140" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#f2ce72" stroke="#2f313a" stroke-width="10" stroke-linejoin="round" paint-order="stroke">ACE!</text>
+
+</g>
+</svg>

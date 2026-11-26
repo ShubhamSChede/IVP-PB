@@ -1,0 +1,60 @@
+{
+  "pack": "IVP Pickleball",
+  "stickers": [
+    {
+      "id": "ace",
+      "title": "Ace!",
+      "src": "/stickers/ace.svg"
+    },
+    {
+      "id": "dink",
+      "title": "Dink",
+      "src": "/stickers/dink.svg"
+    },
+    {
+      "id": "kitchen",
+      "title": "Kitchen!",
+      "src": "/stickers/kitchen.svg"
+    },
+    {
+      "id": "lets-go",
+      "title": "Let's go!",
+      "src": "/stickers/lets-go.svg"
+    },
+    {
+      "id": "fire",
+      "title": "Fire",
+      "src": "/stickers/fire.svg"
+    },
+    {
+      "id": "in",
+      "title": "In!",
+      "src": "/stickers/in.svg"
+    },
+    {
+      "id": "out",
+      "title": "Out?!",
+      "src": "/stickers/out.svg"
+    },
+    {
+      "id": "so-close",
+      "title": "So close",
+      "src": "/stickers/so-close.svg"
+    },
+    {
+      "id": "winner",
+      "title": "Winner",
+      "src": "/stickers/winner.svg"
+    },
+    {
+      "id": "bullish",
+      "title": "Bullish",
+      "src": "/stickers/bullish.svg"
+    },
+    {
+      "id": "gg",
+      "title": "GG",
+      "src": "/stickers/gg.svg"
+    }
+  ]
+}

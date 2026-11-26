@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Fire">
+<title>Fire</title>
+<defs>
+<filter id="s" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".22"/></filter>
+<linearGradient id="f" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e8551c"/><stop offset=".6" stop-color="#ff8a1f"/><stop offset="1" stop-color="#ffb02e"/></linearGradient>
+</defs>
+<g filter="url(#s)">
+<path d="M256,30 C270,90 340,120 352,190 C362,160 352,132 346,116 C410,160 430,230 410,290 C390,350 330,380 256,380 C182,380 122,350 102,290 C84,232 112,176 150,150 C150,186 164,206 180,214 C176,150 206,80 256,30 Z" fill="#ffffff" stroke="#ffffff" stroke-width="40" stroke-linejoin="round"/>
+<path d="M256,30 C270,90 340,120 352,190 C362,160 352,132 346,116 C410,160 430,230 410,290 C390,350 330,380 256,380 C182,380 122,350 102,290 C84,232 112,176 150,150 C150,186 164,206 180,214 C176,150 206,80 256,30 Z" fill="url(#f)" stroke="#2f313a" stroke-width="12" stroke-linejoin="round"/>
+<path d="M258,170 C262,214 318,232 318,292 C318,336 290,360 256,360 C222,360 194,336 194,296 C194,262 214,244 226,236 C226,262 236,274 248,278 C240,236 246,200 258,170 Z" fill="#f2ce72" stroke="#2f313a" stroke-width="8" stroke-linejoin="round"/>
+<path d="M256,262 C262,286 286,296 286,320 C286,340 272,350 256,350 C240,350 226,340 226,322 C226,306 238,298 244,294 C246,280 250,270 256,262 Z" fill="#ffffff" opacity=".9"/>
+<path d="M140,250 C134,226 140,204 152,190" stroke="#ffffff" stroke-width="12" stroke-linecap="round" fill="none" opacity=".55"/>
+<text x="319" y="472" text-anchor="middle" font-size="124" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)" fill="#ffffff" stroke="#ffffff" stroke-width="30" stroke-linejoin="round">FIRE</text>
+<text x="319" y="472" text-anchor="middle" font-size="124" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)" fill="#ff8a1f" stroke="#2f313a" stroke-width="10" stroke-linejoin="round" paint-order="stroke">FIRE</text>
+</g>
+</svg>

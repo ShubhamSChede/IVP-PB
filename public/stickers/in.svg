@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="In!">
+<title>In!</title>
+<defs><filter id="s" x="-10%" y="-10%" width="120%" height="125%"><feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000" flood-opacity=".22"/></filter></defs>
+<g filter="url(#s)">
+<circle cx="256" cy="196" r="160" fill="#ffffff"/><circle cx="256" cy="196" r="144" fill="#22a35a" stroke="#2f313a" stroke-width="10"/><path d="M184,200 l50,50 l96,-104" stroke="#ffffff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="323" y="476" text-anchor="middle" font-size="124" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#ffffff" stroke="#ffffff" stroke-width="30" stroke-linejoin="round">IN!</text>
+<text x="323" y="476" text-anchor="middle" font-size="124" font-family="Inter, 'Helvetica Neue', Arial, sans-serif" font-weight="900" letter-spacing="-2" transform="skewX(-8)"  fill="#22a35a" stroke="#2f313a" stroke-width="10" stroke-linejoin="round" paint-order="stroke">IN!</text>
+
+</g>
+</svg>
