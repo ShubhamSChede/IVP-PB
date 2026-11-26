@@ -20,7 +20,7 @@ const FIELDS = [
   ["phase", "Phase"],
   ["title", "Title (for breaks / non-match rows)"],
   ["format", "Format"],
-  ["warmup", "Court 4 (warm-up)"],
+  ["warmup", "Warm-up court"],
   ["officials", "Officials"],
 ];
 
@@ -115,7 +115,7 @@ export default function ScheduleView() {
 
   return (
     <div>
-      <PageTitle title="Schedule" subtitle="Courts 1–3 play each tie at the same time · Court 4 is for warm-up">
+      <PageTitle title="Schedule" subtitle="Courts 3–5 play each tie at the same time">
         {nowIdx >= 0 && (
           <button onClick={jumpToNow} className="h-11 rounded-md border border-accent/50 px-4 text-sm text-accent-ink">
             Jump to now
@@ -171,7 +171,7 @@ export default function ScheduleView() {
                       {isEditor && <EditIconButton label={`Edit ${it.wave}`} onClick={() => setEditing(it)} />}
                     </div>
                     <p className="mt-1.5 text-xs font-medium leading-relaxed text-muted">
-                      {[it.format, it.warmup && `Ct 4: ${it.warmup}`].filter(Boolean).join(" · ")}
+                      {[it.format, it.warmup && `Warm-up: ${it.warmup}`].filter(Boolean).join(" · ")}
                     </p>
                     {it.officials && !/^Ct1: ___/.test(it.officials) && (
                       <p className="mt-1 text-xs font-medium text-muted">Officials: {it.officials}</p>

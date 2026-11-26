@@ -6,7 +6,7 @@ insert into settings (key, label, value, notes, sort) values
   ('total_teams', 'Total Teams', '10', 'Team names & rosters are edited on the Teams page; everything updates live.', 0),
   ('roster_pairings', 'Roster & Pairings', '6 Players', 'Min. 1 female player per team. Captains decide the 3 pairs & court assignments on the spot before each tie.', 1),
   ('tournament_courts', 'Tournament Courts', '3', 'All 3 sets of a team tie run simultaneously on Courts 1, 2, and 3 (best of 3 sets wins the tie).', 2),
-  ('practice_warmup_court', 'Practice / Warm-up Court', '1', 'Court 4 reserved strictly for next-wave teams to warm up 5 mins before their slot.', 3),
+  ('practice_warmup_court', 'Practice / Warm-up Court', '1', 'A separate court is reserved strictly for next-wave teams to warm up 5 mins before their slot.', 3),
   ('event_window', 'Event Window', '3:30 PM – 10:00 PM', '390 mins total: 330 mins net play + 45 mins break + 15 mins trophy wrap-up.', 4),
   ('midevent_break', 'Mid-Event Break', '45 mins', 'Scheduled 7:15 PM – 8:00 PM after Swiss Round 3 (dinner + Top-4 seed check).', 5),
   ('trophy_wrapup', 'Trophy & Wrap-up', '15 mins', 'Scheduled 9:45 PM – 10:00 PM right after the Grand Final.', 6),
@@ -19,7 +19,7 @@ insert into settings (key, label, value, notes, sort) values
 insert into settings (key, label, value, notes, sort) values
   ('event_title', 'Event Title', 'IVP Pickleball 2026', 'Shown in the site header', 100),
   ('how_to_run', 'How To Run (Tournament Day)', '1. Teams Tab: Enter your 10 team names, captains, and 6-player rosters. Pairings are flexible—captains assign pairs to Courts 1–3 on the spot.
-2. Swiss Round 1 (3:30 PM – 4:45 PM): Enter Court 1, 2, and 3 scores in the yellow cells on ''Swiss_Matches'' for ties T01–T05.
+2. Swiss Round 1 (3:30 PM – 4:45 PM): Enter Court 3, 4 and 5 scores in the yellow cells on ''Swiss_Matches'' for ties T01–T05.
 3. Auto-Fill Round 2 (4:45 PM – 6:00 PM): The instant all 5 Round 1 ties are marked ''Completed'', Round 2 (T06–T10) auto-populates with 1–0 vs 1–0, 1–0 vs 0–1 (no rematch), and 0–1 vs 0–1!
 4. Auto-Fill Round 3 (6:00 PM – 7:15 PM): The instant all 5 Round 2 ties are ''Completed'', Round 3 (T11–T15) auto-populates matching records (2–0, 1–1, 0–2) with automatic rematch avoidance!
 5. IPL Playoffs (8:00 PM – 9:45 PM): Top 4 from ''Standings'' auto-populate into ''IPL_Playoffs'' (Q1: 1v2, Eliminator: 3v4). Enter scores to auto-advance to Q2, Grand Final, and Podium.', null, 101);
@@ -44,7 +44,7 @@ insert into rules (code, category, topic, ruling, sort) values
   ('R17', 'Kitchen (NVZ) Rules', 'Re-Establishing Feet', 'After stepping into the Kitchen to play a bounced ball, BOTH feet must clearly touch the ground outside the Kitchen before the player can legally hit a volley.', 21),
   ('R18', 'Faults & Logistics', 'Net Touch & Body Hit', 'Touching the net or net post with your body, paddle, or clothing while the ball is in play is a FAULT. If a live ball hits a player''s body/clothes (other than paddle hand below wrist), it is a FAULT.', 22),
   ('R19', 'Faults & Logistics', 'Double Hits & Carries', 'An unintentional double hit on one continuous single-direction swing is LEGAL. Deliberately catching, carrying, or scooping the ball on the paddle is a FAULT.', 23),
-  ('R20', 'Faults & Logistics', 'On-the-Spot Lineups & Punctuality', 'Captains must submit Court 1, 2 & 3 pairings simultaneously 2 minutes before the wave starts. Teams not on court within 3 minutes of their wave start forfeit 0–15 on the delayed court(s).', 24),
+  ('R20', 'Faults & Logistics', 'On-the-Spot Lineups & Punctuality', 'Captains must submit Court 3, 4 & 5 pairings simultaneously 2 minutes before the wave starts. Teams not on court within 3 minutes of their wave start forfeit 0–15 on the delayed court(s).', 24),
   ('SPIRIT', 'Spirit of the Game', 'Spirit of the Game', 'Respect umpires, linesmen, and opponents. Any edge-case situation not listed above will be decided by the Tournament Organizers and their decision will be final.', 99);
 
 insert into teams (code, name, captain, sort) values

@@ -48,7 +48,7 @@ export function useStandings() {
 export function TopFour({ rows, compact = false }) {
   const top = rows.slice(0, TOP);
   return (
-    <section className="bg-accent text-on-accent" style={{ clipPath: PARALLELOGRAM }} aria-label="Top 4: playoff places">
+    <section className="bg-accent italic text-on-accent" style={{ clipPath: PARALLELOGRAM }} aria-label="Top 4: playoff places">
       <div style={{ paddingLeft: SLANT + 14, paddingRight: SLANT + 14 }} className={compact ? "py-3" : "py-4"}>
         {!compact && (
           <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-on-accent/70">

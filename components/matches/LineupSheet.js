@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Sheet from "@/components/ui/Sheet";
 import { Field, PrimaryButton, Select, TextInput } from "@/components/ui/Form";
-import { COURTS } from "@/lib/tournament";
+import { COURTS, COURT_NUMBERS } from "@/lib/tournament";
 import { useLiveData } from "@/components/providers/LiveDataProvider";
 
 // Who played which court (2 per side) + the umpire per court.
@@ -67,7 +67,7 @@ export default function LineupSheet({ match, open, onClose, onSave }) {
       <div className="space-y-5">
         {COURTS.map((c, i) => (
           <section key={c} className="space-y-3 rounded-2xl border border-line p-3">
-            <h3 className="text-base text-ink-strong">Court {i + 1}</h3>
+            <h3 className="text-base text-ink-strong">Court {COURT_NUMBERS[i]}</h3>
             <PairPicker team={A} players={playersByTeam.get(match.team_a_id) ?? []} value={lineups[c]?.a} onChange={(p) => setSide(c, "a", p)} />
             <PairPicker team={B} players={playersByTeam.get(match.team_b_id) ?? []} value={lineups[c]?.b} onChange={(p) => setSide(c, "b", p)} />
             <Field label="Umpire">
