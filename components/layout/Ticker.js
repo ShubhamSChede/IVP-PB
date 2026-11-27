@@ -104,6 +104,13 @@ function buildItems({ matches, teamsById, teams, activity_log }) {
       );
     }
   }
+  // Always: where to watch replays
+  items.push(
+    <span key="replays">
+      <span className="mr-2 text-accent-ink">REPLAYS</span>
+      Full match clips on the FieldFlicks app
+    </span>
+  );
   return items;
 }
 

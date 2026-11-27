@@ -7,19 +7,19 @@ import { useState } from "react";
 import Icon from "@/components/ui/Icon";
 import UnlockSheet from "./UnlockSheet";
 import Ticker from "./Ticker";
+import { useViewers } from "@/lib/hooks/useViewers";
 import { useEditor } from "@/components/providers/EditorProvider";
 import { useLiveData } from "@/components/providers/LiveDataProvider";
 import { useToast } from "@/components/providers/ToastProvider";
 
-// Desktop (≥1024px): full top menu.
+// Desktop (≥1024px): top menu. Teams, Schedule, Rules (and organiser tools)
+// live under More, same as the phone tab bar.
 const DESKTOP = [
   { href: "/", label: "Live" },
   { href: "/matches", label: "Matches" },
   { href: "/standings", label: "Standings" },
-  { href: "/teams", label: "Teams" },
-  { href: "/schedule", label: "Schedule" },
   { href: "/chat", label: "Chat", badge: true },
-  { href: "/rules", label: "Rules" },
+  { href: "/more", label: "More", also: ["/teams", "/schedule", "/rules"] },
 ];
 // Phones & tablets: app-style bottom tab bar (5 tabs max).
 const TABS = [
@@ -46,11 +46,24 @@ function Badge({ count }) {
 
 function ConnectionDot() {
   const { connection } = useLiveData();
+  const viewers = useViewers();
   const label = connection === "live" ? "Live" : connection === "offline" ? "Reconnecting…" : "Connecting…";
+  const watching = connection === "live" && viewers ? `${viewers} ${viewers === 1 ? "device" : "devices"} watching` : null;
   return (
-    <span className="flex items-center gap-1.5 text-xs font-medium text-muted" title={label} aria-label={`Connection: ${label}`}>
+    <span
+      className="flex shrink-0 items-center gap-1.5 text-xs font-medium text-muted"
+      title={watching ? `${label} · ${watching}` : label}
+      aria-label={watching ? `${label}: ${watching}` : `Connection: ${label}`}
+    >
       <span className={`size-2 rounded-full ${connection === "live" ? "bg-accent shadow-[0_0_8px_var(--accent)]" : "animate-pulse bg-warn"}`} />
       <span className={connection === "live" ? "hidden xl:inline" : ""}>{label}</span>
+      {watching && (
+        <span className="flex items-center gap-1 tabular-nums text-ink-strong">
+          <Icon name="eye" size={14} />
+          {viewers}
+          <span className="hidden font-medium text-muted xl:inline">watching</span>
+        </span>
+      )}
     </span>
   );
 }
@@ -117,7 +130,7 @@ export default function Nav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative rounded-md px-3 py-2 text-sm transition-colors ${
+                className={`relative rounded-md px-2.5 py-2 text-sm transition-colors xl:px-3 ${
                   isActive(path, item) ? "bg-accent/15 text-accent-ink" : "text-muted hover:text-ink"
                 }`}
               >

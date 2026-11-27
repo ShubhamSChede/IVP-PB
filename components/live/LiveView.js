@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import TieCard from "@/components/matches/TieCard";
+import Icon from "@/components/ui/Icon";
 import { Podium } from "@/components/matches/MatchesView";
 import { MiniStandings } from "@/components/standings/StandingsView";
 import Skeleton, { ErrorNote } from "@/components/ui/Skeleton";
@@ -102,6 +103,41 @@ function Feed() {
   );
 }
 
+/** Where to find match video (venue cameras, not on this site). */
+const FIELDFLICKS = [
+  ["Android", "https://play.google.com/store/apps/details?id=com.fieldflicks"],
+  ["iPhone", "https://apps.apple.com/search?term=FieldFlicks"],
+];
+
+export function ReplaysNote() {
+  return (
+    <div className="flex items-start gap-3 border-l-4 border-accent bg-surface-2 px-3.5 py-3 text-sm text-ink">
+      <span className="grid size-9 shrink-0 place-items-center rounded-md bg-accent text-on-accent">
+        <Icon name="video" size={18} />
+      </span>
+      <div className="min-w-0">
+        <p>
+          <span className="font-semibold text-ink-strong">Replays &amp; full match clips</span> will be available in the{" "}
+          <span className="font-semibold text-ink-strong">FieldFlicks</span> mobile app.
+        </p>
+        <p className="mt-2 flex flex-wrap gap-2">
+          {FIELDFLICKS.map(([os, href]) => (
+            <a
+              key={os}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-9 items-center gap-1.5 rounded-md border border-line bg-surface px-3 text-[13px] font-semibold text-ink-strong hover:border-accent"
+            >
+              {os} app <span aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function LiveView() {
   const { matches, loaded, error, settingsMap } = useLiveData();
 
@@ -126,6 +162,8 @@ export default function LiveView() {
           </h1>
         </div>
         {error && <ErrorNote message={error} />}
+
+        <ReplaysNote />
 
         <Podium matches={matches} />
 
