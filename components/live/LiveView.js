@@ -117,7 +117,7 @@ export default function LiveView() {
   const stageLabel = stage === "playoffs" ? "IPL Playoffs" : `Swiss · Round ${stage}`;
 
   return (
-    <div className="grid gap-5 lg:grid-cols-3">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-3">
       <div className="space-y-5 lg:col-span-2">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-accent-ink">{stageLabel}</p>
@@ -132,14 +132,14 @@ export default function LiveView() {
         {onCourt.length > 0 && (
           <section>
             <h2 className="mb-3 text-lg text-ink-strong">On court now</h2>
-            <div className="grid gap-3">{onCourt.map((m) => <TieCard key={m.id} match={m} />)}</div>
+            <div className="grid grid-cols-[minmax(0,1fr)] gap-3">{onCourt.map((m) => <TieCard key={m.id} match={m} />)}</div>
           </section>
         )}
 
         {upNext.length > 0 && (
           <section>
             <h2 className="mb-3 text-lg text-ink-strong">Up next</h2>
-            <div className="grid gap-3">{upNext.map((m) => <TieCard key={m.id} match={m} compact />)}</div>
+            <div className="grid grid-cols-[minmax(0,1fr)] gap-3">{upNext.map((m) => <TieCard key={m.id} match={m} compact />)}</div>
           </section>
         )}
 

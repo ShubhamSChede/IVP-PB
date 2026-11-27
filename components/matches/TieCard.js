@@ -80,7 +80,7 @@ function LineupLine({ court }) {
   const { a, b, umpire } = court;
   if (!a.length && !b.length && !umpire) return null;
   return (
-    <p className="mt-1 grid grid-cols-[1fr_auto_1fr] gap-2 text-[11px] font-medium leading-tight text-muted">
+    <p className="mt-1 grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] gap-2 text-[11px] font-medium leading-tight text-muted">
       <span className="truncate">{a.join(" & ")}</span>
       <span className="text-muted/60">{umpire ? `Ump: ${umpire}` : ""}</span>
       <span className="truncate text-right">{b.join(" & ")}</span>
@@ -196,7 +196,7 @@ export default function TieCard({ match, compact = false }) {
       </div>
 
       {/* Teams + sets */}
-      <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3">
         <TeamName team={A} fallback={placeholder(match, "a")} cls={nameCls("a")} />
         <p className="text-2xl tabular-nums text-ink-strong">
           <Flash value={r.setsA} /> <span className="text-muted">–</span> <Flash value={r.setsB} />
@@ -234,7 +234,7 @@ export default function TieCard({ match, compact = false }) {
               </div>
             ) : (
               <div key={c.key} className="py-2">
-                <div className={`grid items-center text-sm ${canScore ? "grid-cols-[4.5rem_1fr_auto_1fr_2rem]" : "grid-cols-[4.5rem_1fr_auto_1fr]"}`}>
+                <div className={`grid items-center text-sm ${canScore ? "grid-cols-[4.5rem_minmax(0,1fr)_auto_minmax(0,1fr)_2rem]" : "grid-cols-[4.5rem_minmax(0,1fr)_auto_minmax(0,1fr)]"}`}>
                   <span className="font-medium text-muted">Court {c.number}</span>
                   <span className={`text-right text-lg tabular-nums ${c.winner === "a" ? "text-accent-ink" : "text-ink-strong"}`}>
                     <Flash value={c.a}>{c.a ?? "–"}</Flash>

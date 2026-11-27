@@ -84,7 +84,7 @@ function HistoryCard({ h, teamsById }) {
       {h.status !== "pending" && (
         <ul className="mt-3 space-y-1.5 border-t border-line/70 pt-3">
           {h.courts.map((c) => (
-            <li key={c.number} className="grid grid-cols-[2.25rem_3.5rem_1fr] items-center gap-2 text-sm">
+            <li key={c.number} className="grid grid-cols-[2.25rem_3.5rem_minmax(0,1fr)] items-center gap-2 text-sm">
               <span className="text-xs font-medium text-muted">C{c.number}</span>
               <span className={`tabular-nums ${c.won ? "text-accent-ink" : c.won === false ? "text-ink" : "text-muted"}`}>
                 {c.us ?? "–"}–{c.them ?? "–"}

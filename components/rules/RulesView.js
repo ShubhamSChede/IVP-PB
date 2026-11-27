@@ -54,7 +54,7 @@ function RuleSheet({ rule, onClose }) {
   return (
     <Sheet open onClose={onClose} title={isNew ? "Add rule" : `Edit ${rule.code}`}>
       <div className="space-y-3">
-        <div className="grid grid-cols-[6rem_1fr] gap-2">
+        <div className="grid grid-cols-[6rem_minmax(0,1fr)] gap-2">
           <Field label="Code"><TextInput value={form.code} onChange={set("code")} placeholder="R21" /></Field>
           <Field label="Category"><TextInput value={form.category} onChange={set("category")} /></Field>
         </div>
